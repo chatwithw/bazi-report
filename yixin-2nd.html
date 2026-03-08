@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>艺心 · 客户筛选与能量管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f5;
+  --bg-card: #ffffff;
+  --bg-warm: #f5f0ea;
+  --text: #2a2520;
+  --text-body: #4a4540;
+  --text-dim: #7a756e;
+  --text-muted: #a5a09a;
+  --accent: #8b6914;
+  --accent-light: #c49a3c;
+  --accent-bg: rgba(139,105,20,0.06);
+  --border: #e8e2da;
+  --border-light: #f0ebe5;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-hover: 0 2px 8px rgba(0,0,0,0.06);
+  --water: #2e6b8a;
+  --water-bg: #eef5f9;
+  --water-border: #c8dde8;
+  --wood: #3a7a3a;
+  --wood-bg: #eef6ee;
+  --wood-border: #c4dcc4;
+  --fire: #a84a28;
+  --fire-bg: #faf0ec;
+  --fire-border: #e0c4b8;
+  --earth: #7a6a2e;
+  --earth-bg: #f7f4ec;
+  --earth-border: #ddd6c0;
+  --metal: #5a5a6e;
+  --metal-bg: #f0f0f4;
+  --metal-border: #cdcdd4;
+  --red: #a04040;
+  --red-bg: #fdf5f5;
+  --red-border: #f0d8d8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text-body);
+  line-height: 2;
+  font-weight: 400;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 0 28px; }
+
+/* Hero */
+.hero { padding: 72px 0 48px; text-align: center; }
+.version-badge { display: inline-block; font-size: 11px; letter-spacing: 3px; padding: 5px 14px; border: 1px solid var(--border); color: var(--text-dim); border-radius: 20px; margin-bottom: 24px; }
+.hero h1 { font-family: 'Noto Serif SC', serif; font-size: 26px; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: 1px; }
+.hero-sub { font-size: 15px; color: var(--text-dim); }
+.hero-meta { margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+.hero-divider { width: 32px; height: 1px; background: var(--accent-light); margin: 32px auto 0; }
+
+.notice { margin: 32px 0 48px; padding: 20px 24px; background: var(--accent-bg); border-radius: 8px; font-size: 14px; color: var(--text-dim); line-height: 2; }
+
+/* Sections */
+.section { margin: 12px 0; }
+.section-header { cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 18px 20px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 10px; transition: all 0.2s; user-select: none; box-shadow: var(--shadow); }
+.section-header:hover { box-shadow: var(--shadow-hover); border-color: var(--border); }
+.section-header.active { border-radius: 10px 10px 0 0; border-bottom-color: transparent; }
+.section-number { font-family: 'Noto Serif SC', serif; font-size: 13px; color: var(--accent); background: var(--accent-bg); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; flex-shrink: 0; }
+.section-title { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 600; color: var(--text); flex: 1; }
+.section-toggle { font-size: 20px; color: var(--text-muted); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); line-height: 1; }
+.section-header.active .section-toggle { transform: rotate(45deg); }
+
+.section-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+.section-body.open { grid-template-rows: 1fr; }
+.section-body-inner { overflow: hidden; }
+.section-content { padding: 28px 24px 32px; background: var(--bg-card); border: 1px solid var(--border-light); border-top: none; border-radius: 0 0 10px 10px; box-shadow: var(--shadow); }
+
+.section-content h3 { font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 600; margin: 36px 0 16px; color: var(--text); }
+.section-content h3:first-child { margin-top: 0; }
+.section-content h4 { font-size: 14px; font-weight: 600; color: var(--text); margin: 22px 0 10px; }
+.section-content p { font-size: 15px; margin-bottom: 16px; color: var(--text-body); }
+.section-content strong { color: var(--text); font-weight: 600; }
+.section-content ul { list-style: none; margin: 12px 0 20px; }
+.section-content li { font-size: 15px; color: var(--text-body); padding: 5px 0 5px 20px; position: relative; }
+.section-content li::before { content: ''; position: absolute; left: 4px; top: 14px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-light); }
+
+.key-point { padding: 18px 22px; background: var(--bg-warm); border-radius: 8px; margin: 18px 0; font-size: 15px; }
+.key-point .label { font-size: 12px; color: var(--accent); letter-spacing: 2px; font-weight: 500; margin-bottom: 8px; }
+
+.quote-block { margin: 18px 0; padding: 18px 22px; background: var(--bg-warm); border-radius: 8px; font-size: 14px; color: var(--text-dim); line-height: 2.2; font-style: italic; }
+
+/* Subsection cards (for 最累客户拆解) */
+.sub-card { margin: 20px 0; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 10px; box-shadow: var(--shadow); }
+.sub-card-label { font-size: 12px; letter-spacing: 2px; color: var(--accent); font-weight: 500; margin-bottom: 8px; }
+.sub-card h4 { font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+.sub-card p { font-size: 14px; color: var(--text-body); margin-bottom: 12px; }
+.sub-card strong { color: var(--text); }
+.sub-card .signal { margin-top: 14px; padding: 14px 18px; background: var(--bg-warm); border-radius: 8px; font-size: 13px; color: var(--text-body); line-height: 2; }
+.sub-card .signal-label { font-size: 12px; color: var(--accent); letter-spacing: 1px; font-weight: 500; margin-bottom: 6px; font-style: normal; }
+
+/* Tables */
+.data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; margin: 20px 0; }
+.data-table th { text-align: left; padding: 12px 14px; font-weight: 500; font-size: 12px; color: var(--text-dim); background: var(--bg-warm); border-bottom: 1px solid var(--border-light); }
+.data-table td { padding: 12px 14px; color: var(--text-body); border-bottom: 1px solid var(--border-light); vertical-align: top; font-size: 13px; }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* Dual tables for 说vs不说 */
+.dual-table-label { font-size: 13px; font-weight: 600; color: var(--text); margin: 20px 0 8px; display: flex; align-items: center; gap: 8px; }
+.dual-table-label .icon { font-size: 16px; }
+
+/* Template block */
+.template-block { margin: 24px 0; padding: 24px; background: var(--bg-warm); border-radius: 10px; border: 1px solid var(--border-light); }
+.template-block h4 { font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+.template-item { font-size: 14px; color: var(--text-body); margin-bottom: 12px; }
+.template-item .t-label { font-weight: 600; color: var(--accent); font-size: 12px; letter-spacing: 1px; margin-bottom: 4px; }
+.template-item .t-content { color: var(--text-dim); font-size: 13px; }
+
+/* Layers */
+.layer { margin: 16px 0; padding: 20px 22px; border-radius: 8px; border: 1px solid var(--border-light); }
+.layer-num { font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+.layer p { font-size: 14px; margin-bottom: 0; }
+
+/* Content type cards */
+.content-cards { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.content-card { padding: 18px 20px; background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 10px; }
+.content-card .cc-type { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+.content-card .cc-why { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+.content-card .cc-example { font-size: 13px; color: var(--accent); font-style: italic; }
+
+/* Conclusion */
+.conclusion-item { margin: 20px 0; padding: 20px 22px; background: var(--accent-bg); border-radius: 8px; }
+.conclusion-item strong { color: var(--text); }
+.conclusion-item p { font-size: 14px; margin-bottom: 0; }
+
+/* Footer */
+.footer { padding: 48px 0 36px; text-align: center; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-light); }
+.footer p { margin-top: 16px; }
+
+/* Footnote */
+.footnote { font-size: 13px; color: var(--text-dim); margin: 16px 0; padding: 14px 18px; background: var(--bg-warm); border-radius: 8px; line-height: 2; }
+
+/* Next steps table */
+.next-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid var(--border-light); border-radius: 8px; overflow: hidden; margin: 20px 0; }
+.next-table th { text-align: left; padding: 12px 14px; font-weight: 500; font-size: 12px; color: var(--text-dim); background: var(--bg-warm); border-bottom: 1px solid var(--border-light); }
+.next-table td { padding: 12px 14px; color: var(--text-body); border-bottom: 1px solid var(--border-light); vertical-align: top; font-size: 13px; }
+.next-table tr:last-child td { border-bottom: none; }
+.next-note { font-size: 14px; color: var(--text-dim); margin-top: 16px; text-align: center; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeIn 0.5s ease forwards; opacity: 0; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+
+@media (max-width: 600px) {
+  .container { padding: 0 18px; }
+  .hero { padding: 48px 0 32px; }
+  .hero h1 { font-size: 21px; }
+  .hero-sub { font-size: 14px; }
+  .section-header { padding: 16px 16px; gap: 10px; }
+  .section-title { font-size: 16px; }
+  .section-content { padding: 22px 16px 28px; }
+  .section-content p, .section-content li { font-size: 14px; }
+  .key-point { padding: 16px 18px; font-size: 14px; }
+  .sub-card { padding: 18px; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 8px; }
+  .notice { font-size: 13px; padding: 16px 18px; }
+  .template-block { padding: 18px; }
+  .layer { padding: 16px 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 密码层 -->
+<div id="lock-screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;max-width:320px;padding:0 24px;">
+    <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px;">艺心 · 客户筛选与能量管理</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:32px;">请输入访问密码</div>
+    <input id="pwd-input" type="password" placeholder="输入密码"
+      style="width:100%;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans SC',sans-serif;font-size:15px;color:var(--text);text-align:center;outline:none;transition:border-color 0.2s;"
+      onfocus="this.style.borderColor='var(--accent-light)'" onblur="this.style.borderColor='var(--border)'"
+    >
+    <div id="pwd-error" style="font-size:12px;color:#a04040;margin-top:10px;height:18px;"></div>
+    <button onclick="checkPwd()" style="margin-top:8px;padding:12px 36px;background:var(--text);border:none;color:#fff;font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">进入报告</button>
+  </div>
+</div>
+
+<div class="container" id="report-content" style="display:none;">
+
+  <header class="hero animate-in">
+    <div class="version-badge">第二阶段 · 客户筛选与能量管理</div>
+    <h1>找对人，互相滋养</h1>
+    <p class="hero-sub">用你的真实经验校准能量地图</p>
+    <div class="hero-meta">丙火日主 · 七杀格 · 食神制杀 · 艺心</div>
+    <div class="hero-divider"></div>
+  </header>
+
+  <div class="notice animate-in delay-1">第一阶段给你画了一张能量地图。第二阶段要做的事是——用你13年的真实经验，验证这张地图哪里准、哪里需要标注，然后在关键位置插上路标。</div>
+
+  <!-- 壹 -->
+  <div class="section animate-in delay-2">
+    <div class="section-header active" onclick="toggleSection(this)">
+      <span class="section-number">壹</span>
+      <span class="section-title">你的反馈验证了什么</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body open"><div class="section-body-inner"><div class="section-content">
+
+      <div class="key-point">
+        <div class="label">验证一</div>
+        <p><strong>丙火感染力不是技巧，是特质。</strong></p>
+      </div>
+      <p>北大妈妈的信里用了四个词：能量、磁力、光、温暖。没有一个是关于"方法"或"技术"的。她跟你合作近十年，从高考陪伴到闺蜜，这不是"服务满意度高"能解释的——这是丙火日主的弥散性温暖在起作用。你不需要"做"什么来建立信任，你在那里，信任就在。</p>
+
+      <div class="key-point">
+        <div class="label">验证二</div>
+        <p><strong>食伤在地支是你最深的委屈来源。</strong></p>
+      </div>
+      <div class="quote-block">
+        "从小到大默默做，别人觉得我不作为。"<br>
+        "懂我的客户就一直跟我亲密如姐妹，不懂我的就觉得我不管学生。"<br>
+        "我有时候去寺院为孩子们祈福念经，我从来不说。"<br>
+        "之前没写复盘，家长觉得买了个寂寞。"
+      </div>
+      <p>这不是沟通技巧的问题，是能量结构的问题。你的输出通道藏在地支，你的价值天然不容易被看见。你已经带着这个配置活了四十多年——它既是你的伤，也是你的力量。后面会专门讲哪些该让它被看见，哪些该让它继续藏着。</p>
+
+      <div class="key-point">
+        <div class="label">验证三</div>
+        <p><strong>七杀格在压力下被激活，而不是被击垮。</strong></p>
+      </div>
+      <p>被质疑你不怕，砍价才让你不舒服。这个反应非常"七杀格"——外部压力（质疑你的专业）反而激发你的状态；但"不被尊重"（砍价 = 你不值这个价）触发的是尊严层面的愤怒。后面砍价那一章会拆开讲。</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 贰 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">贰</span>
+      <span class="section-title">客户画像：从理论到你的真实案例</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <h3>北大妈妈：水型家长的"既济"样本</h3>
+      <p>她是你做得最顺的客户类型的典型代表。拆开看她为什么"顺"：</p>
+
+      <div class="key-point">
+        <div class="label">能量层面</div>
+        <p><strong>水火既济。</strong>水型家长（高敏感、善观察、内心有深层不安全感）遇到丙火日主（温暖、弥散性安全感），形成的是"既济"之象——水火各在其位，互相成就。她的敏感让她能接住你所有没说出口的用心；你的温暖让她的焦虑有了安放之处。</p>
+      </div>
+
+      <h4>为什么能合作近十年</h4>
+      <p>不是因为你"服务好"（当然你服务好），而是因为你们之间的能量交换是自然流动的。她不需要你解释你做了什么，她感受得到；你不需要刻意维护关系，她自然留下来。这种客户关系的维护成本几乎为零，因为根本不需要"维护"。</p>
+
+      <h4>关键启示</h4>
+      <p>"这样的家长就给我无限动力和好感觉"——你说得对。水型客户不只是让你赚钱，是在给你的丙火"续能"。你服务她们的过程本身就在滋养你自己。这就是为什么第一阶段建议水型客户占30-40%——不只是因为匹配度高，更因为她们是你的能量来源。</p>
+
+      <h3>"最累客户"拆解：三种不同的"累"</h3>
+      <p>你反馈的"最累客户"其实不是一种人，是三种。区分很重要，因为应对策略完全不同。</p>
+
+      <div class="sub-card">
+        <div class="sub-card-label">第一种</div>
+        <h4>甲木型——"啥也不懂还特别爱输出、强控型、指手画脚"</h4>
+        <p>这是偏印夺食。甲木是你的枭神，枭神的作用是"夺你的食伤"——翻译成人话就是：ta在压制你的专业输出。ta不是不信任你，ta是习惯性地要掌控一切，包括你的专业领域。</p>
+        <p>你遇到甲木型的反应是愤怒（"想砍ta们"），这很正常——你的七杀格本能地抵抗"被控制"。但愤怒消耗的是你的火，不是ta的木。</p>
+        <div class="signal">
+          <div class="signal-label">识别信号</div>
+          会说"我觉得应该这样做"、"我朋友家孩子用的是XX方法"、主动给你发教育文章、在你讲方案的时候打断你提出自己的想法。
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-label">第二种</div>
+        <h4>红灯型——"巨婴，情绪化"</h4>
+        <p>这不是五行类型的问题，是成熟度的问题。全权甩手、自己不改变但期待孩子改变、花了钱就觉得你该解决一切。</p>
+        <p>你的正官格会在这类客户身上不自觉地"过度负责"——ta甩多少，你就接多少，直到把自己耗干。</p>
+        <div class="signal">
+          <div class="signal-label">识别信号</div>
+          "孩子就交给你了"、不回复你的沟通、不执行你给的家庭配合方案、但孩子没进步的时候第一个找你。
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-label">第三种</div>
+        <h4>"领导型家长"——甲木 + 金的复合型</h4>
+        <p>你单独提到"对领导家长很消耗"，这种可能不是纯甲木或纯金，而是两者的叠加：既有甲木的控制欲（"我说了算"），又有金型的结果导向（"我花了钱，给我看效果"）。双重压制，消耗最大。</p>
+        <p>你已经准备让爱马老师帮你做这个个案处理，这个选择很对。从命理角度补充一点：你的七杀格对"被不尊重"的反应强度，可能不只是当下这个客户触发的——七杀格的压力模式往往有早年根源。你在个案里可以带着这个觉察去看：<strong>当下的愤怒里，有多少是对这个客户的，有多少是更早的东西被激活了。</strong></p>
+      </div>
+
+      <div class="key-point">
+        <div class="label">区分要点</div>
+        <p><strong>甲木型想"指导"你</strong>（"我比你懂"），<strong>金型想"考核"你</strong>（"给我看结果"）。甲木型挑战你的方法，金型挑战你的成果。两者都让你不舒服，但触发的是不同层面的反应。</p>
+      </div>
+
+      <h3>你的客户组合诊断</h3>
+      <p>基于你的反馈推测：你目前的客户里，甲木型和金型的比例可能偏高（转介绍 + 校园渠道来的家长，社会地位不低、控制欲较强的比例会高于平均水平）。</p>
+
+      <table class="data-table">
+        <thead><tr><th>类型</th><th>特征</th><th>对你的作用</th><th>建议占比</th><th>现状推测</th><th>调整方向</th></tr></thead>
+        <tbody>
+          <tr><td>🌊 水型</td><td>敏感、善观察、愿意深度投入</td><td><strong>能量来源</strong>——服务过程滋养你的丙火</td><td>30-40%</td><td>偏低</td><td>主动吸引</td></tr>
+          <tr><td>🌳 乙木型</td><td>温和、配合、尊重专业</td><td><strong>省心搭档</strong>——方案落地顺畅</td><td>20-30%</td><td>合理</td><td>保持</td></tr>
+          <tr><td>🌳 甲木型</td><td>强势、爱指导、有控制欲</td><td><strong>能量消耗</strong>——偏印夺食</td><td>尽量少</td><td>可能偏高</td><td>前期筛选过滤</td></tr>
+          <tr><td>⛰️ 土型</td><td>务实、话少、不催不急、忠诚</td><td><strong>稳定底座</strong>——节奏同步不消耗</td><td>15-20%</td><td>未知</td><td>保持，不需要刻意增减</td></tr>
+          <tr><td>⚔️ 金型</td><td>理性、结果导向、决策果断</td><td><strong>高收益高消耗</strong>——付款爽快但要求极高</td><td>10-20%</td><td>可能偏高</td><td>控制数量，每季度1-2个</td></tr>
+          <tr><td>🔥 火型</td><td>热情、急躁、耐心差</td><td><strong>短期燃料</strong>——信任来得快但易流失</td><td>10-15%</td><td>未知</td><td>有策略地接，先给"小快赢"*</td></tr>
+        </tbody>
+      </table>
+      <div class="footnote">* 小快赢：在服务早期制造一个可见的小变化（不一定是分数，可能是孩子态度、习惯上的转变），用来满足火型家长对"速度"的需求，买到长期合作的时间窗口。</div>
+
+      <p><strong>怎么吸引更多水型客户：</strong>这跟你的定位和内容方向直接相关——下一章讲。</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 叁 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">叁</span>
+      <span class="section-title">定位：为什么"提分老师"穿着别扭</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <p>你说"专注中高考提分、心理学赋能、13年经验、教育规划专家——不是很顺手，总感觉定位不够精准。"</p>
+      <p>从命理角度看，这个"不顺手"的来源很清楚。</p>
+
+      <h3>定位和你的理想客户之间有错位</h3>
+      <p>"提分"这个词天然吸引的是要快、要结果的人——火型（"多久能提分？"）和金型（"成功率多少？"）。但你做得最顺的客户是水型和乙木型，ta们找你不是因为"提分"，是因为ta们感受到了你的温暖和专业深度。</p>
+      <div class="key-point">
+        <div class="label">核心错位</div>
+        <p><strong>你现在的招牌吸引来的，不是你最想服务的人。</strong></p>
+      </div>
+      <p>"9天100分"作为案例当然是真的，但它作为核心卖点，筛选出来的客户跟你的能量配置是反的。追"速成"来的人，恰恰最不适合你的土食伤慢节奏。</p>
+
+      <h3>"不顺手"本身就是食伤在地支的体现</h3>
+      <p>你内心清楚自己的核心价值不是"提分"，是"看见孩子、陪伴成长、激发内驱力"。但食伤在地支的人，最难的就是把内在的东西清晰地表达出来。你知道自己是什么，但不知道怎么说。</p>
+      <p>这不是你的表达能力有问题——你跟客户一对一的时候沟通得很好。问题出在"一对多"的公开表达上：写公众号、发朋友圈、做自我介绍，这些需要食伤透天干的能力，而你的食伤在地支。</p>
+
+      <h3>方向感，而不是具体文案</h3>
+      <p>命理能告诉你的是"为什么不对"和"往哪个方向走"，但具体的定位文案是品牌策略的事。方向上：</p>
+      <div class="key-point">
+        <div class="label">方向转换</div>
+        <p><strong>从"我能帮你的孩子提多少分" → "我能帮你的孩子找到ta自己的节奏"。</strong></p>
+        <p style="margin-bottom:0;">前者卖的是结果承诺（吸引金型/火型），后者卖的是过程价值（吸引水型/木型）。你的命盘配置、你的服务特质、你做得最好的案例，全部指向后者。</p>
+      </div>
+      <p>不需要马上全改。但你可以开始注意：每次对外表达的时候，你在讲"提分"还是在讲"看见孩子"？哪个说起来更自然、更像你？</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 肆 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">肆</span>
+      <span class="section-title">砍价：不是钱的问题</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <p>你说"超级不喜欢客户砍价，被质疑反而无所谓。"这个反应的强度值得拆开看。</p>
+
+      <h3>为什么砍价比质疑更让你不舒服</h3>
+      <p>被质疑专业能力，你的七杀格反而被激活——"你觉得我不行？我证明给你看。"压力变燃料，这是七杀格的本能反应。</p>
+      <p>但砍价触发的不是"能力被挑战"，是"价值被贬低"。你的庚金偏财透月干，意味着你对自己的市场价值有清晰的内在标尺。当有人砍价，你感受到的不是"ta觉得贵"，而是"ta觉得我不值"。这是尊严层面的事。</p>
+      <p>而且，你的丙火日主 + 食伤在地支的组合，意味着你为每个学生倾注的心血远远超过客户能看到的。你知道自己值这个价（甚至不止），你知道自己默默做了多少——然后有人说"能不能便宜点"。这个委屈不是当下的，是积累了很多年的"付出不被看见"在这个瞬间被引爆了。</p>
+
+      <h3>砍价的本质是前期筛选没做到位</h3>
+      <p>会走到"砍价"这一步的客户，说明ta在了解你的服务理念和定价之前，就已经进入了报价环节。</p>
+      <div class="key-point">
+        <div class="label">核心思路</div>
+        <p><strong>问题不在于"怎么回应砍价"，而在于——怎么让会砍价的人，在知道价格之前就自己退出。</strong></p>
+      </div>
+
+      <div class="layer">
+        <div class="layer-num">第一层：服务理念前置</div>
+        <p>在任何渠道（朋友圈、转介绍话术、初次咨询前的沟通）先讲你的服务理念，而不是服务内容。"我做的是季度深度陪伴，不是短期提分班"——这句话本身就在筛人。认同这个理念的人不会砍价，因为ta知道你卖的不是课时。</p>
+      </div>
+      <div class="layer">
+        <div class="layer-num">第二层：定价透明化</div>
+        <p>在正式咨询之前就让客户知道价格区间。不要等聊了一小时之后再报价——那时候双方都已经投入了时间和情感，报价环节变成了一个你不得不面对的"摊牌"时刻。提前说清楚，让不匹配的人在投入之前就离开。</p>
+      </div>
+      <div class="layer">
+        <div class="layer-num">第三层：用付费诊断做缓冲</div>
+        <p>第一份报告里建议的"深度诊断收费3000-5000元"就是这个逻辑。愿意为诊断付费的人，已经通过了一次价值观筛选。等ta看到诊断报告的深度和专业度，季度服务的报价就不再是一个"贵不贵"的问题，而是"要不要继续"的自然延伸。</p>
+      </div>
+
+      <h3>更深一层：砍价触发的情绪里，有多少是"旧伤"</h3>
+      <p>前面说了，你对砍价的反应强度可能不只是当下的。"从小到大默默做，别人觉得我不作为"——这个模式如果持续了几十年，那么每一次"被贬低价值"的体验，都在触碰同一个伤口。</p>
+      <p>你准备找爱马老师做"对领导型家长的情绪反应"个案，这个方向很好。在做个案的时候，可以带着这个觉察：<strong>当下对砍价的愤怒里，有多少是对这个客户的合理边界反应，有多少是更早期的"付出不被看见"在被激活？</strong>区分清楚，前者用策略解决（筛选机制），后者用觉察和疗愈处理。两条线并行，效果最好。</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 伍 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">伍</span>
+      <span class="section-title">什么该说，什么该不说</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <p>第一阶段建议你"让专业被看见"。你已经开始实践了——写复盘之后家长满意度立刻提升。</p>
+      <p>但"让专业被看见"不等于"把所有事都说出来"。有些沉默是你的人格魅力的一部分，说了反而会减分。</p>
+
+      <h3>区分原则</h3>
+      <p><strong>该说的 = 专业动作。</strong>客户为此付了钱，ta有权知道ta买到了什么。不说，ta会低估你的价值。</p>
+      <p><strong>该不说的 = 情感投入。</strong>这些是你的丙火天性驱动的，不是服务协议里的条款。不说，ta能感受到你的温度；说了，会把自然流动的关怀变成一种需要回应的付出，关系的味道就变了。</p>
+
+      <div class="dual-table-label"><span class="icon">✓</span> 该说出来</div>
+      <table class="data-table">
+        <thead><tr><th>内容</th><th>为什么</th></tr></thead>
+        <tbody>
+          <tr><td>我对孩子做了什么诊断，结论是什么</td><td>这是你的专业判断，不说客户看不到</td></tr>
+          <tr><td>我为什么这样设计方案（逻辑和依据）</td><td>让客户理解"为什么"，减少中途质疑</td></tr>
+          <tr><td>孩子这个月发生了什么变化（不只是分数）</td><td>引导客户关注过程指标，管理预期</td></tr>
+          <tr><td>我发现了新问题，做了什么调整</td><td>让客户知道你在持续关注</td></tr>
+          <tr><td>下一步的计划和需要家长配合的事</td><td>明确各自角色，减少"甩手型"隐患</td></tr>
+        </tbody>
+      </table>
+
+      <div class="dual-table-label"><span class="icon">✗</span> 不该说出来</div>
+      <table class="data-table">
+        <thead><tr><th>内容</th><th>为什么</th></tr></thead>
+        <tbody>
+          <tr><td>你为学生去寺院祈福</td><td>说了会把无条件的关怀变成"我为你付出了这么多"的暗示，客户会从感动变成压力</td></tr>
+          <tr><td>你半夜在想某个孩子的问题</td><td>说了会让客户觉得需要回应你的辛苦，关系从"专业服务"变成"情感债务"</td></tr>
+          <tr><td>你对某个家长额外的情绪关怀</td><td>说了会让对方意识到这是"额外的"，反而破坏了自然流动的温暖感</td></tr>
+          <tr><td>你在服务之外做的额外功课</td><td>说了容易触发"那能不能再多做点"的预期，模糊服务边界</td></tr>
+        </tbody>
+      </table>
+
+      <div class="key-point">
+        <div class="label">底层逻辑</div>
+        <p>北大妈妈用"能量、磁力"来形容你，恰恰是因为她感受到了那些你没说的东西。那些沉默不是你的弱点——它们是你的丙火能量场的组成部分。你需要做的不是让所有东西都被看见，而是<strong>让专业的部分被看见，让人格的部分被感受到。</strong></p>
+      </div>
+
+      <h3>复盘模板：一页纸</h3>
+      <p>降低"说"的执行难度。每月一次，花30分钟写完就好。</p>
+
+      <div class="template-block">
+        <h4>月度服务复盘（示例结构）</h4>
+        <div class="template-item">
+          <div class="t-label">本月观察</div>
+          <div class="t-content">孩子状态的变化（1-2个关键观察点）· 与上月对比的进展</div>
+        </div>
+        <div class="template-item">
+          <div class="t-label">本月做了什么</div>
+          <div class="t-content">主要的教学/引导动作（2-3条）· 中途的调整及原因</div>
+        </div>
+        <div class="template-item">
+          <div class="t-label">下月计划</div>
+          <div class="t-content">重点方向 · 需要家长配合的事项（如有）</div>
+        </div>
+        <div class="template-item" style="margin-bottom:0;">
+          <div class="t-label">一句话总结</div>
+          <div class="t-content">用一句话概括这个月的核心变化</div>
+        </div>
+      </div>
+      <p>简短、结构化、每月固定发。不需要长篇大论，但这个"固定动作"本身就在持续传递你的专业度。你已经验证过了——有了这个，"买了个寂寞"不会再出现。</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 陆 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">陆</span>
+      <span class="section-title">获客：用你的方式吸引对的人</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <p>你现在的获客方式是转介绍 + 私域朋友圈 + 校园渠道。没有内容获客，没有投放。</p>
+
+      <h3>转介绍：你的丙火天然通道</h3>
+      <p>转介绍是你最匹配的获客方式——丙火的感染力在熟人圈层里最有效，服务过的水型/乙木型客户天然愿意帮你传播。但目前是"被动等"，不是"主动设计"。</p>
+
+      <div class="key-point">
+        <div class="label">让转介绍成为服务流程的一部分</div>
+        <p>在季度服务结束时的复盘对话里自然带出来。不是"帮我推荐客户"，而是——<br><br>"下季度可能还有1-2个名额。如果你身边有朋友的孩子遇到类似的情况，可以让ta先跟我聊聊，不一定合作。"<br><br>这句话做了三件事：用"限量"传递稀缺性（这是你的真实状态）；"不一定合作"降低转介绍心理压力；"先跟我聊聊"利用了你丙火"照亮别人"的天然特质——聊完之后，信任已经建立了一半。</p>
+      </div>
+
+      <h3>朋友圈：少而精，不是高频刷屏</h3>
+      <p>你的土食伤不适合每天发三条朋友圈。适合你的节奏是：<strong>一个月2-3条，每条都是有分量的内容。</strong></p>
+
+      <h4>适合你产出的内容类型</h4>
+      <div class="content-cards">
+        <div class="content-card">
+          <div class="cc-type">案例复盘（脱敏后）</div>
+          <div class="cc-why">土食伤的"时间证明价值"</div>
+          <div class="cc-example">"一个孩子从抗拒到主动学习的过程中，发生了什么"</div>
+        </div>
+        <div class="content-card">
+          <div class="cc-type">家长常见误区</div>
+          <div class="cc-why">壬水七杀的洞察力</div>
+          <div class="cc-example">"焦虑的家长最容易做的一件事，恰好是最没用的"</div>
+        </div>
+        <div class="content-card">
+          <div class="cc-type">教育理念短文</div>
+          <div class="cc-why">丙火的感染力 + 正官格的权威感</div>
+          <div class="cc-example">"我为什么不做速成班"</div>
+        </div>
+      </div>
+      <p><strong>不适合的内容类型：</strong>追热点、短视频、每日打卡、高频更新。这些需要食伤透天干的能量，硬做只会消耗你。</p>
+
+      <h3>内容吸引的客户类型</h3>
+      <p>注意一个重要的对应关系：你发什么样的内容，就吸引什么样的客户。</p>
+      <table class="data-table">
+        <thead><tr><th>你发的内容</th><th>吸引的客户</th><th>特征</th></tr></thead>
+        <tbody>
+          <tr><td>"9天100分"</td><td>火型 / 金型</td><td>要快、要结果</td></tr>
+          <tr><td>"一个孩子找回学习动力的故事"</td><td>水型 / 乙木型</td><td>重感受、重过程</td></tr>
+        </tbody>
+      </table>
+      <p><strong>你的内容方向本身就是客户筛选机制。</strong>不是你去找对的客户，而是让对的客户通过你的内容找到你。</p>
+
+      <h3>甲辰大运的机会窗口</h3>
+      <p>2026年开始走甲辰大运，甲木透天干，你的输出能力会被激活——内容创作会比现在自然得多。</p>
+      <p>但不需要等到那时候才开始。现在可以做的是"攒素材"：</p>
+      <ul>
+        <li>把印象深刻的案例随手记下来（哪怕只是几句话）</li>
+        <li>把你在服务中的洞察用语音备忘录存下来</li>
+        <li>不用马上成文，先积累原始素材</li>
+      </ul>
+      <p>等到甲辰大运的能量到位，这些素材会自然地流淌出来，变成你的内容。13年的积累 + 大运的推动，这个组合的势能是很大的。</p>
+
+    </div></div></div>
+  </div>
+
+  <!-- 结语 -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="section-number">终</span>
+      <span class="section-title">结语</span>
+      <span class="section-toggle">+</span>
+    </div>
+    <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+      <p>第一阶段画了地图，第二阶段用你的真实经验校准了坐标。核心就是三件事：</p>
+
+      <div class="conclusion-item">
+        <p><strong>知道谁是你的人。</strong>水型和乙木型家长是你的理想客户，ta们能接住你的丙火温暖，也能感受到你的用心。通过定位和内容方向，主动吸引ta们。</p>
+      </div>
+      <div class="conclusion-item">
+        <p><strong>让该看见的被看见。</strong>专业动作用月度复盘讲清楚，情感投入让它继续做你的暗涌。你的魅力不是靠"说"出来的，但你的价值需要被"看到"。</p>
+      </div>
+      <div class="conclusion-item">
+        <p><strong>保护好你的火。</strong>不匹配的客户用筛选机制在前期过滤，而不是接了之后硬扛。你的丙火很旺，但不是无限的。把能量留给值得照亮的人。</p>
+      </div>
+
+      <h3>这个框架还能做什么</h3>
+      <p>这两份报告搭建的分析框架是活的，不是一次性结论。随着你的业务推进，以下这些场景都可以用命理能量的视角来拆解：</p>
+
+      <table class="next-table">
+        <thead><tr><th>你遇到的情况</th><th>可以做什么</th><th>需要你提供什么</th></tr></thead>
+        <tbody>
+          <tr><td>学生面临重大选择（考研vs考公、留学vs就业）</td><td>从八字看哪个方向更顺应天赋和当前运势</td><td>学生出生年月日时 + 具体选项</td></tr>
+          <tr><td>孩子没动力、一提学习就抵触</td><td>分析内驱力类型，找到适合的激发方式</td><td>学生出生年月日时 + 当前表现</td></tr>
+          <tr><td>亲子关系紧张、沟通不了</td><td>看双方的能量互动模式和沟通盲区</td><td>家长和孩子的出生年月日时 + 冲突场景</td></tr>
+          <tr><td>想了解孩子适合什么方向</td><td>从八字看天赋特质、适合的学科和职业大类</td><td>学生出生年月日时 + 当前兴趣</td></tr>
+          <tr><td>孩子最近状态突然不对</td><td>从大运流年看为什么在这个时间点出问题</td><td>学生出生年月日时 + 状态变化时间点</td></tr>
+          <tr><td>拿不准一个客户要不要接</td><td>快速判断能量匹配度</td><td>客户的基本特征描述</td></tr>
+          <tr><td>甲辰大运开始后感受到变化</td><td>校准十年发展节奏</td><td>你的真实感受和新的困惑</td></tr>
+        </tbody>
+      </table>
+      <p class="next-note">有新的案例或困惑时，一个具体场景就够展开一次分析。</p>
+
+      <div class="key-point" style="margin-top:36px; text-align:center;">
+        <p style="margin-bottom:0;">你的丙火照了13年，照亮了3000多个孩子和家庭。<br>接下来的甲辰十年，木生火，火会烧得更稳、更远。<br>愿你被对的人看见，也愿你的沉默继续有人懂。</p>
+      </div>
+
+    </div></div></div>
+  </div>
+
+  <footer class="footer">
+    <p>命理能量与客户关系分析 · 客户筛选与能量管理</p>
+  </footer>
+
+</div>
+
+<script>
+const PASS = 'yixin913';
+
+function checkPwd() {
+  const input = document.getElementById('pwd-input').value;
+  if (input === PASS) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('report-content').style.display = 'block';
+  } else {
+    document.getElementById('pwd-error').textContent = '密码不正确，请重试';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').style.borderColor = '#a04040';
+    setTimeout(() => {
+      document.getElementById('pwd-error').textContent = '';
+      document.getElementById('pwd-input').style.borderColor = 'var(--border)';
+    }, 2000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pwd-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkPwd();
+  });
+});
+
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  header.classList.toggle('active');
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>
