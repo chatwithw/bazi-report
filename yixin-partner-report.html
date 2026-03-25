@@ -374,35 +374,75 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text
     <p>跟获客一样，找合伙人的方式也要匹配你的能量模式。你的丙火不适合"主动去找人谈合作"。你适合的是——<strong>做你擅长的事，做到被看见，然后对的人自然会靠过来。</strong></p>
     <p>回想一下你跟万里的合作是怎么开始的——大概率不是你在某个平台上搜"合伙人"搜到他的，而是在某个自然的场景下，你们聊了、觉得对了、就开始合作了。<strong>你的丙火在自然交流中建立信任的速度极快，这本身就是你最好的"找人方式"。</strong></p>
 
-    <div class="path-card">
-      <h4>路径一：通过你的客户和学生家长圈层</h4>
-      <p>你服务了3000+家庭，这些家长本身就是各行各业的专业人士。ta们当中可能就有适合跟你合作的人。你不需要刻意说"帮我介绍合伙人"，你只需要把服务做好——家长自己会在ta觉得合适的时候提到你。</p>
-      <p><strong>这条路径的天花板：</strong>只靠"体验过的人帮传"，增长速度会慢。你的价值必须经过体验才能传递，省力但有上限，不能只走这一条。</p>
-    </div>
+    <p>点击展开每条路径的详情：</p>
 
-    <div class="path-card">
-      <h4>路径二：通过你的内容输出</h4>
-      <p>你写的案例复盘、分享的方法论、做的报告（脱敏后），都是在向外界展示"你是什么人、你做什么、你的水准怎么样"。看到这些内容并且主动找你的人，天然已经通过了第一轮筛选。</p>
-      <p><strong>时机上有一个好消息：</strong>2026年你开始走乙巳大运。乙木是你的正印，巳火是丙火的禄位——翻译成人话就是：你的口碑开始帮你说话（正印），你自身的能量底座也变厚了（巳火帮身）。过去十年你靠自己硬扛（丙午大运），接下来十年你可以开始借力了。</p>
-      <p><strong>还有一个你会明显感受到的变化：</strong>过去这十年，你的日支子水被大运午火冲着——子午冲。这个冲带来的是一种底层的不安稳感。换了乙巳大运之后，这个冲就结束了。你会觉得"稳下来了"——不是不动了，是动的时候脚下有根了。</p>
-      <div class="tc-note" style="margin:14px 0;">
-        <strong>但这十年不是"躺赢"：</strong>第一，正印可能跟你的偏财打架——如果太追求商业变现，可能反而损害口碑和贵人运。第二，不能让"被照顾"取代了"自己干活"——合伙人可以帮你分担其他环节，但"看人"这件事不能外包。
+    <div class="type-list" id="pathList">
+
+      <div class="type-card" onclick="togglePath(this)">
+        <div class="tc-header"><span class="tc-icon">👥</span><span class="tc-name">路径一：客户和学生家长圈层</span><span class="tc-stars" style="color:var(--wood);">省力</span></div>
+        <div class="tc-oneliner">3000+家庭，ta们当中可能就有适合跟你合作的人</div>
+        <div class="tc-tags"><span class="tc-tag">转化率最高</span><span class="tc-tag">增长慢</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>你不需要刻意说"帮我介绍合伙人"，你只需要把服务做好——家长自己会在ta觉得合适的时候提到你。你的专业价值不容易被外部直接看到，但一旦有人体验过你的服务，就很难忘记。<strong>"有人体验过 → ta帮你传"是你最自然的找人方式。</strong></p>
+          <div class="tc-note"><strong>天花板：</strong>只靠"体验过的人帮传"，增长速度会慢。你的价值必须经过体验才能传递，省力但有上限，不能只走这一条。</div>
+        </div></div>
       </div>
-      <p>你的庚金偏财透月干，写的东西天然有"落地感"——工具感强。但可能偏"硬"，温度不够。写内容的时候需要刻意保留你丙火的温度——<strong>先有人味，再有方法论，别反过来。</strong></p>
-      <p><strong>你适合的节奏：</strong>慢、重质量、有积累感。一个月2-3篇深度内容，比每天发三条朋友圈效果好得多。</p>
+
+      <div class="type-card" onclick="togglePath(this)">
+        <div class="tc-header"><span class="tc-icon">✍️</span><span class="tc-name">路径二：内容输出</span><span class="tc-stars" style="color:var(--water);">精准</span></div>
+        <div class="tc-oneliner">看到你内容并主动找你的人，天然已经通过第一轮筛选</div>
+        <div class="tc-tags"><span class="tc-tag">乙巳大运加持</span><span class="tc-tag">慢节奏</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>你写的案例复盘、分享的方法论、做的报告（脱敏后），都是在向外界展示"你是什么人、你做什么、你的水准怎么样"。</p>
+          <p><strong>时机上有一个好消息：</strong>2026年你开始走乙巳大运。乙木是你的正印，巳火是丙火的禄位——翻译成人话就是：你的口碑开始帮你说话（正印），你自身的能量底座也变厚了（巳火帮身）。过去十年你靠自己硬扛（丙午大运），接下来十年你可以开始借力了。</p>
+          <p><strong>还有一个你会明显感受到的变化：</strong>过去这十年，你的日支子水被大运午火冲着——子午冲。这个冲带来的是一种底层的不安稳感。换了乙巳大运之后，这个冲就结束了。你会觉得"稳下来了"——不是不动了，是动的时候脚下有根了。这对找合伙人和经营合作关系特别重要：之前那种不安全感可能让你在合作中更容易过度付出（怕失去），接下来这个底层焦虑减轻了，你守边界会比以前容易得多。</p>
+          <div class="tc-note" style="margin:14px 0;">
+            <strong>但这十年不是"躺赢"：</strong>第一，正印可能跟你的偏财打架——如果太追求商业变现，可能反而损害口碑和贵人运。找合伙人如果核心动机是"一起赚更多钱"，合作可能走不远；如果是"互相成就"，正印的好处才能真正兑现。第二，不能让"被照顾"取代了"自己干活"——合伙人可以帮你分担其他环节，但"看人"这件事不能外包。
+          </div>
+          <p>你的庚金偏财透月干，写的东西天然有"落地感"——工具感强。但可能偏"硬"，温度不够。写内容的时候需要刻意保留你丙火的温度——<strong>先有人味，再有方法论，别反过来。</strong></p>
+          <p><strong>你适合的节奏：</strong>慢、重质量、有积累感。一个月2-3篇深度内容，比每天发三条朋友圈效果好得多。</p>
+        </div></div>
+      </div>
+
+      <div class="type-card" onclick="togglePath(this)">
+        <div class="tc-header"><span class="tc-icon">🏠</span><span class="tc-name">路径三：社群和沙龙</span><span class="tc-stars" style="color:var(--fire);">自然</span></div>
+        <div class="tc-oneliner">你找人不靠"认识很多人"，靠"被对的人记住"</div>
+        <div class="tc-tags"><span class="tc-tag">第一次被注意到</span><span class="tc-tag">需要后续深聊</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>丙火是太阳，照射范围大、能量弥散。你在一个沙龙里不需要主动跟每个人聊，你在那里，别人就能感受到你的存在。你一开口，洞察力和温暖感会同时传递出去。你不会八面玲珑，但你会在某个瞬间说出一句特别到位的话、给出一个别人没想到的视角，然后这个瞬间会被人记住。</p>
+          <p>但弥散性也有另一面：你给所有人留下好印象，不一定能跟某个特定的人建立深度连接。社群场景适合"第一次被注意到"，但从被注意到到真正合作，还需要后续的一对一深聊——那才是你的丙火真正发挥穿透力的地方。</p>
+          <div class="tc-note"><strong>"靠谱"这个气质有两面：</strong>别人因为信任你而提出合作邀请，你的本能很难拒绝——哪怕你隐约觉得不太对。不是所有信任你的人都适合跟你合作。</div>
+          <p><strong>选场域也很重要：</strong>你在不对的场景里会收缩。如果一个沙龙太商业、太功利、太表面，你的洞察力不会被激活。选那种允许深度对话、不全在交换名片的地方。</p>
+        </div></div>
+      </div>
+
     </div>
 
-    <div class="path-card">
-      <h4>路径三：通过你参与的社群和沙龙</h4>
-      <p>丙火是太阳，照射范围大、能量弥散。你在一个沙龙里不需要主动跟每个人聊，你在那里，别人就能感受到你的存在。你一开口，洞察力和温暖感会同时传递出去。你找人不靠"认识很多人"，靠<strong>"被对的人记住"</strong>。</p>
-      <p>但弥散性也有另一面：你给所有人留下好印象，不一定能跟某个特定的人建立深度连接。社群场景适合"第一次被注意到"，但从被注意到到真正合作，还需要后续的一对一深聊。</p>
-      <p><strong>"靠谱"这个气质有两面：</strong>别人因为信任你而提出合作邀请，你的本能很难拒绝——哪怕你隐约觉得不太对。不是所有信任你的人都适合跟你合作。</p>
+    <h3>适合 vs 不适合</h3>
+
+    <div style="display:flex;gap:12px;margin:20px 0;flex-wrap:wrap;">
+      <div style="flex:1;min-width:240px;padding:18px 20px;background:var(--wood-bg);border-radius:10px;border:1px solid var(--border-light);">
+        <div style="font-size:11px;letter-spacing:2px;color:var(--wood);font-weight:500;margin-bottom:8px;">✓ 适合你的方式</div>
+        <p style="font-size:13px;margin-bottom:8px;">做好服务，让体验过的人帮你传</p>
+        <p style="font-size:13px;margin-bottom:8px;">写深度内容，让对的人主动找你</p>
+        <p style="font-size:13px;margin-bottom:8px;">在自然场域里，被对的人记住</p>
+        <p style="font-size:13px;margin-bottom:0;">先感受再决策，感觉对了再谈规则</p>
+      </div>
+      <div style="flex:1;min-width:240px;padding:18px 20px;background:var(--red-bg);border-radius:10px;border:1px solid var(--border-light);">
+        <div style="font-size:11px;letter-spacing:2px;color:var(--red);font-weight:500;margin-bottom:8px;">✗ 不适合你的方式</div>
+        <p style="font-size:13px;margin-bottom:8px;">主动在平台上搜索和联系——你的专业价值不容易通过文字描述传递</p>
+        <p style="font-size:13px;margin-bottom:8px;">被人介绍后直接"谈判式"合作——跳过感受的决策只剩理性</p>
+        <p style="font-size:13px;margin-bottom:0;">只靠感觉不谈规则——丙火的温暖让你初期对大多数人都感觉不错</p>
+      </div>
     </div>
 
-    <h3>你不适合的方式</h3>
-    <p><strong>不适合：主动在平台上搜索和联系。</strong>你的专业价值不容易通过文字描述传递，"主动推销自己"消耗的是你最窄的通道。</p>
-    <p><strong>不适合：被人介绍之后"谈判式"合作。</strong>你的丙火需要先感受再决策——你需要在跟一个人相处的过程中"感觉到"ta靠不靠谱。跳过感受直接谈条件，你的决策就只剩理性判断。</p>
-    <p><strong>但"感觉对了"也不等于"真的对"。</strong>丙火的温暖会让你在初期对大多数人都感觉不错。所以不是"只靠感觉"，而是<strong>感觉先行，规则跟上</strong>——感觉对了之后，该谈的事还是要谈。</p>
+    <div class="key-point">
+      <div class="label">核心原则</div>
+      <p>不是"只靠感觉"，而是<strong>感觉先行，规则跟上</strong>——感觉对了之后，该谈的事还是要谈。这跟后面叁里"蜜月期谈规则"是同一个逻辑。</p>
+    </div>
 
   </div></div></div>
 </div>
@@ -545,7 +585,9 @@ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('pwd-i
 
 function toggleSection(header){header.classList.toggle('active');header.nextElementSibling.classList.toggle('open');}
 
-function toggleCard(card){const wasActive=card.classList.contains('active');document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));if(!wasActive)card.classList.add('active');}
+function toggleCard(card){const wasActive=card.classList.contains('active');document.querySelectorAll('#typeList .type-card').forEach(c=>c.classList.remove('active'));if(!wasActive)card.classList.add('active');}
+
+function togglePath(card){const wasActive=card.classList.contains('active');document.querySelectorAll('#pathList .type-card').forEach(c=>c.classList.remove('active'));if(!wasActive)card.classList.add('active');}
 
 // Compare
 const compareData=[
