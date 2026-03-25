@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>艺心 · 合伙人关系分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f6f2;
+  --bg-card: #fdfcf9;
+  --bg-warm: #f2ede5;
+  --text: #1e1e1c;
+  --text-body: #3e3e3a;
+  --text-dim: #6a6a62;
+  --text-muted: #9a9a90;
+  --accent: #6a4a14;
+  --accent-light: #a07828;
+  --accent-bg: rgba(106,74,20,0.05);
+  --border: #ddd6c8;
+  --border-light: #ebe6dc;
+  --shadow: 0 1px 3px rgba(0,0,0,0.03);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.06);
+  --water: #2e6b8a; --water-bg: #ecf3f7;
+  --wood: #3a7a3a; --wood-bg: #ecf2ea;
+  --fire: #9a4a28; --fire-bg: #f6ede8;
+  --earth: #7a6a2e; --earth-bg: #f2ede4;
+  --metal: #5a5a6e; --metal-bg: #eeeced;
+  --red: #904040; --red-bg: #f6efef;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text-body);line-height:2.1;font-weight:400;font-size:15px;-webkit-font-smoothing:antialiased;}
+.container{max-width:660px;margin:0 auto;padding:0 30px;}
+
+/* Hero */
+.hero{padding:88px 0 48px;text-align:center;}
+.hero-line{width:1px;height:32px;background:var(--text);margin:0 auto 24px;opacity:0.12;}
+.version-badge{display:inline-block;font-size:11px;letter-spacing:3px;padding:5px 14px;border:1px solid var(--border);color:var(--text-dim);border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Noto Serif SC',serif;font-size:24px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:2px;}
+.hero-sub{font-size:14px;color:var(--text-dim);letter-spacing:1px;}
+.hero-meta{margin-top:20px;font-size:12px;color:var(--text-muted);letter-spacing:2px;}
+.hero-divider{width:28px;height:1px;background:var(--accent-light);margin:28px auto 0;opacity:0.5;}
+
+.notice{margin:24px 0 48px;padding:20px 24px;background:var(--accent-bg);border-radius:8px;font-size:14px;color:var(--text-dim);line-height:2.1;}
+
+/* Sections (accordion) */
+.section{margin:10px 0;}
+.section-header{cursor:pointer;display:flex;align-items:center;gap:14px;padding:18px 22px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:10px;transition:all 0.2s;user-select:none;box-shadow:var(--shadow);}
+.section-header:hover{box-shadow:var(--shadow-hover);border-color:var(--border);}
+.section-header.active{border-radius:10px 10px 0 0;border-bottom-color:transparent;}
+.section-number{font-family:'Noto Serif SC',serif;font-size:13px;color:var(--accent);background:var(--accent-bg);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;flex-shrink:0;}
+.section-title{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600;color:var(--text);flex:1;letter-spacing:0.5px;}
+.section-toggle{font-size:20px;color:var(--text-muted);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);line-height:1;}
+.section-header.active .section-toggle{transform:rotate(45deg);}
+.section-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1);}
+.section-body.open{grid-template-rows:1fr;}
+.section-body-inner{overflow:hidden;}
+.section-content{padding:28px 24px 32px;background:var(--bg-card);border:1px solid var(--border-light);border-top:none;border-radius:0 0 10px 10px;box-shadow:var(--shadow);}
+.section-content h3{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:600;margin:36px 0 14px;color:var(--text);letter-spacing:0.5px;}
+.section-content h3:first-child{margin-top:0;}
+.section-content p{font-size:15px;margin-bottom:14px;color:var(--text-body);}
+.section-content strong{color:var(--text);font-weight:600;}
+
+.key-point{padding:18px 22px;background:var(--bg-warm);border-radius:8px;margin:18px 0;font-size:15px;}
+.key-point .label{font-size:11px;color:var(--accent);letter-spacing:2px;font-weight:500;margin-bottom:6px;}
+.key-point p{margin-bottom:0;}
+
+/* Type cards (list style from C, warm bg from A) */
+.type-list{display:flex;flex-direction:column;gap:2px;margin:20px 0;}
+.type-card{background:var(--bg-card);border-bottom:1px solid var(--border-light);padding:22px 24px;cursor:pointer;transition:all 0.3s;position:relative;}
+.type-card:first-child{border-top:1px solid var(--border-light);border-radius:10px 10px 0 0;}
+.type-card:last-child{border-radius:0 0 10px 10px;}
+.type-card:hover{background:var(--bg-warm);}
+.type-card.active{background:var(--bg-card);}
+.tc-header{display:flex;align-items:baseline;gap:12px;}
+.tc-icon{font-size:16px;}
+.tc-name{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.5px;}
+.tc-stars{font-size:11px;color:var(--accent-light);margin-left:auto;letter-spacing:2px;}
+.tc-oneliner{font-size:13px;color:var(--text-dim);margin-top:6px;line-height:1.9;}
+.tc-tags{margin-top:6px;}
+.tc-tag{display:inline-block;font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:2px;color:var(--text-muted);letter-spacing:0.5px;margin-right:6px;}
+.tc-hint{position:absolute;right:24px;top:24px;font-size:16px;color:var(--text-muted);opacity:0.25;transition:opacity 0.2s;}
+.type-card:hover .tc-hint{opacity:0.5;}
+.type-card.active .tc-hint{display:none;}
+.tc-detail{max-height:0;overflow:hidden;transition:max-height 0.5s ease;}
+.type-card.active .tc-detail{max-height:800px;}
+.tc-detail-inner{padding-top:16px;margin-top:16px;border-top:1px solid var(--border-light);font-size:14px;color:var(--text-body);line-height:2.1;}
+.tc-detail-inner p{margin-bottom:12px;}
+.role-tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:2px;margin:3px 6px 3px 0;letter-spacing:0.5px;}
+.role-yes{background:var(--wood-bg);color:var(--wood);}
+.role-no{background:var(--red-bg);color:var(--red);}
+.tc-note{margin-top:12px;padding:14px 18px;background:var(--bg-warm);border-radius:6px;font-size:13px;color:var(--text-dim);line-height:2;}
+.tc-note strong{color:var(--text-body);}
+
+/* Compare */
+.compare-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin:20px 0 20px;}
+.compare-tab{flex:1;padding:12px 8px;text-align:center;font-size:12px;color:var(--text-muted);cursor:pointer;transition:all 0.2s;background:none;border:none;border-bottom:2px solid transparent;user-select:none;letter-spacing:0.5px;}
+.compare-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.compare-tab:hover:not(.active){color:var(--text-dim);}
+.compare-body{min-height:140px;padding:4px 0;}
+.cb-title{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:0.5px;}
+.cb-sub{font-size:12px;color:var(--text-muted);margin-bottom:18px;letter-spacing:0.5px;}
+.compare-row{display:flex;gap:28px;margin-bottom:14px;}
+.compare-col{flex:1;}
+.ccl{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:500;margin-bottom:6px;}
+.compare-col p{font-size:13px;color:var(--text-body);line-height:2;}
+.bar-wrap{margin-top:14px;}
+.bar-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;letter-spacing:0.5px;}
+.bar-track{height:4px;background:var(--border-light);border-radius:2px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease;}
+
+/* Summary table */
+.summary-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1px solid var(--border-light);border-radius:8px;overflow:hidden;margin:20px 0;}
+.summary-table th{text-align:left;padding:10px 12px;font-weight:500;font-size:11px;color:var(--text-dim);background:var(--bg-warm);border-bottom:1px solid var(--border-light);letter-spacing:1px;}
+.summary-table td{padding:10px 12px;color:var(--text-body);border-bottom:1px solid var(--border-light);vertical-align:top;font-size:13px;}
+.summary-table tr:last-child td{border-bottom:none;}
+
+/* Check (signal lights) */
+.check-q{margin-bottom:24px;}
+.check-q-title{font-family:'Noto Serif SC',serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;letter-spacing:0.5px;}
+.check-options{display:flex;flex-direction:column;gap:6px;}
+.check-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--bg-card);border:1px solid transparent;border-bottom:1px solid var(--border-light);cursor:pointer;transition:all 0.2s;user-select:none;}
+.check-opt:hover{background:var(--bg-warm);}
+.check-opt.selected{background:var(--accent-bg);border-color:var(--border);}
+.check-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:7px;}
+.dot-green{background:var(--wood);}
+.dot-yellow{background:var(--earth);}
+.dot-red{background:var(--red);}
+.check-opt-text{font-size:13px;color:var(--text-body);line-height:1.9;}
+.check-result{margin-top:24px;padding:22px 24px;background:var(--bg-warm);border-radius:8px;font-size:14px;color:var(--text-body);line-height:2.1;opacity:0;max-height:0;overflow:hidden;transition:all 0.4s ease;}
+.check-result.show{opacity:1;max-height:200px;}
+
+/* Red flags */
+.red-flag{padding:14px 18px;background:var(--red-bg);border-left:3px solid var(--red);margin:10px 0;font-size:14px;color:var(--text-body);line-height:2;}
+
+/* Checklist */
+.align-list{margin:20px 0;}
+.align-item{display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border-light);font-size:14px;color:var(--text-body);}
+.align-num{font-family:'Noto Serif SC',serif;font-weight:600;color:var(--accent);flex-shrink:0;width:20px;}
+
+/* Timeline */
+.tl-nav{display:flex;gap:0;margin:20px 0;position:relative;}
+.tl-nav::before{content:'';position:absolute;top:50%;left:28px;right:28px;height:1px;background:var(--border);transform:translateY(-50%);}
+.tl-step{flex:1;text-align:center;position:relative;z-index:1;cursor:pointer;user-select:none;}
+.tl-dot{width:30px;height:30px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-family:'Noto Serif SC',serif;font-size:11px;color:var(--text-muted);transition:all 0.3s;}
+.tl-step.active .tl-dot{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.tl-step.done .tl-dot{border-color:var(--wood);color:var(--wood);background:var(--wood-bg);}
+.tl-label{font-size:11px;color:var(--text-muted);letter-spacing:1px;transition:color 0.3s;}
+.tl-step.active .tl-label{color:var(--accent);}
+.tl-step.done .tl-label{color:var(--wood);}
+.tl-body{border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:24px 4px;min-height:170px;}
+.tl-body .tl-title{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:0.5px;}
+.tl-body .tl-sub{font-size:12px;color:var(--text-muted);margin-bottom:14px;letter-spacing:0.5px;}
+.tl-body p{font-size:14px;margin-bottom:10px;}
+.tl-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.tl-action{font-size:11px;padding:3px 10px;border:1px solid var(--border);color:var(--text-dim);letter-spacing:0.5px;}
+.tl-nav-btns{display:flex;justify-content:space-between;margin-top:16px;}
+.tl-btn{font-size:12px;padding:8px 20px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;color:var(--text-dim);font-family:'Noto Sans SC',sans-serif;transition:all 0.2s;letter-spacing:0.5px;border-radius:6px;}
+.tl-btn:hover{border-color:var(--accent-light);color:var(--accent);}
+.tl-btn:disabled{opacity:0.2;cursor:default;}
+
+/* Next steps table */
+.next-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1px solid var(--border-light);border-radius:8px;overflow:hidden;margin:20px 0;}
+.next-table th{text-align:left;padding:10px 12px;font-weight:500;font-size:11px;color:var(--text-dim);background:var(--bg-warm);border-bottom:1px solid var(--border-light);letter-spacing:1px;}
+.next-table td{padding:10px 12px;color:var(--text-body);border-bottom:1px solid var(--border-light);vertical-align:top;font-size:13px;}
+.next-table tr:last-child td{border-bottom:none;}
+
+/* Footer */
+.footer{padding:48px 0 36px;text-align:center;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border-light);}
+
+/* Closing quote */
+.closing-quote{margin:36px 0;padding:24px 28px;text-align:center;font-size:15px;color:var(--text-dim);line-height:2.4;font-style:italic;background:var(--bg-warm);border-radius:10px;}
+
+/* Path cards */
+.path-card{margin:20px 0;padding:22px 24px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:10px;box-shadow:var(--shadow);}
+.path-card h4{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:0.5px;}
+.path-card p{font-size:14px;margin-bottom:10px;}
+
+@media (max-width:600px){
+  .container{padding:0 18px;}
+  .hero{padding:56px 0 36px;}
+  .hero h1{font-size:20px;letter-spacing:1px;}
+  .section-header{padding:16px 16px;gap:10px;}
+  .section-title{font-size:16px;}
+  .section-content{padding:22px 16px 28px;}
+  .section-content p,.tc-detail-inner p{font-size:14px;}
+  .key-point{padding:16px 18px;font-size:14px;}
+  .type-card{padding:18px 18px;}
+  .compare-tabs{flex-wrap:wrap;}
+  .compare-tab{flex:none;width:33.33%;font-size:11px;}
+  .compare-row{flex-direction:column;gap:14px;}
+  .summary-table{font-size:12px;}
+  .summary-table th,.summary-table td{padding:8px 8px;}
+  .next-table{font-size:12px;}
+  .next-table th,.next-table td{padding:8px 8px;}
+  .tl-dot{width:26px;height:26px;font-size:10px;}
+  .tl-label{font-size:10px;}
+  .notice{font-size:13px;padding:16px 18px;}
+  .path-card{padding:18px 18px;}
+  .red-flag{padding:12px 14px;font-size:13px;}
+  .align-item{padding:12px 14px;font-size:13px;}
+}
+</style>
+</head>
+<body>
+
+<!-- 密码层 -->
+<div id="lock-screen" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;max-width:320px;padding:0 24px;">
+    <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:1px;">艺心 · 合伙人关系分析</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:32px;">请输入访问密码</div>
+    <input id="pwd-input" type="password" placeholder="输入密码" style="width:100%;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-family:'Noto Sans SC',sans-serif;font-size:16px;color:var(--text);text-align:center;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--accent-light)'" onblur="this.style.borderColor='var(--border)'">
+    <div id="pwd-error" style="font-size:12px;color:var(--red);margin-top:10px;height:18px;"></div>
+    <button onclick="checkPwd()" style="margin-top:8px;padding:12px 36px;background:var(--text);border:none;color:var(--bg);font-family:'Noto Sans SC',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">进入报告</button>
+  </div>
+</div>
+
+<div class="container" id="report-content" style="display:none;">
+
+<header class="hero">
+  <div class="hero-line"></div>
+  <div class="version-badge">第三阶段 · 合伙人关系</div>
+  <h1>找到对的人，用对的方式合作</h1>
+  <p class="hero-sub">命理能量与合伙关系分析 · 完整版</p>
+  <div class="hero-meta">丙火日主 · 食神制杀 · 食神生财 · 艺心</div>
+  <div class="hero-divider"></div>
+</header>
+
+<div class="notice">体验版帮你看清了你在合作关系里的底层模式——为什么会觉得被占便宜、现有合伙人为什么对、断点在哪里。这份完整版接着往下走：什么类型的人跟你最合拍、怎么找到ta们、合作开始之后怎么让关系持续。</div>
+
+<!-- ===== 壹 ===== -->
+<div class="section">
+  <div class="section-header active" onclick="toggleSection(this)">
+    <span class="section-number">壹</span>
+    <span class="section-title">合伙人能量类型图谱</span>
+    <span class="section-toggle">+</span>
+  </div>
+  <div class="section-body open"><div class="section-body-inner"><div class="section-content">
+
+    <p>跟客户那份五行图谱的逻辑一样，合伙人也可以按能量类型分。但合伙关系跟客户关系有一个关键区别：<strong>客户是你服务的对象，合伙人是跟你并肩的人。</strong>匹配标准不同——客户匹配看的是"你能照亮ta吗"，合伙人匹配看的是"你们能不能互相成就"。</p>
+
+    <div class="key-point">
+      <div class="label">两个前提</div>
+      <p>这里说的"水型""木型"不是指对方的日元，而是ta跟你互动时呈现出来的能量特质。有对方八字可以做更精准的分析，没有的话用下面每个类型的行为特征判断就够了。每个类型下面标注的十神关系都是从你的丙火出发。</p>
+    </div>
+
+    <p>点击下方任意类型查看详情：</p>
+
+    <div class="type-list" id="typeList">
+
+      <!-- 水型 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">🌊</span><span class="tc-name">水型合伙人——「懂你但不一定动得起来」</span><span class="tc-stars">★★★★</span></div>
+        <div class="tc-oneliner"><strong>对你来说是官杀</strong>——激发你，也给你压力</div>
+        <div class="tc-tags"><span class="tc-tag">顾问</span><span class="tc-tag">策略搭档</span><span class="tc-tag">反馈者</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>水型合伙人聪明、敏感、想法多，跟你在一起你会觉得"这个人懂我"。ta能看到你看不到的盲区，给你有价值的反馈。你的穿透式洞察力在水型人面前会被激活——思路更清晰、判断更敏锐。</p>
+          <p><strong>适合的合作方式：</strong>做你的"智囊"或"镜子"，帮你校准方向、提供深度反馈。但不适合做需要大量执行的角色。水型人犹豫、反复、启动慢，如果你指望ta去落地执行，你会自己接过来做。</p>
+          <div class="tc-note"><strong>注意：</strong>水型合伙人的焦虑可能会传染给你。你天然会吸收对方的情绪压力，而你是身弱的丙火——水型的激发让你状态好，但承接ta的焦虑本身有能量代价。控制数量，别同时跟太多水型合伙人深度互动。</div>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">顾问</span><span class="role-tag role-yes">策略搭档</span><span class="role-tag role-yes">反馈者</span><span class="role-tag role-no">不适合：核心执行</span><span class="role-tag role-no">不适合：日常运营</span></div>
+        </div></div>
+      </div>
+
+      <!-- 乙木 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">🌳</span><span class="tc-name">乙木型——「最省心的搭档」</span><span class="tc-stars">★★★★★</span></div>
+        <div class="tc-oneliner"><strong>正印</strong>——像藤蔓，温和、支持、尊重你的判断</div>
+        <div class="tc-tags"><span class="tc-tag">核心搭档首选</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>ta会默默帮你做很多事——运营、整理、流程管理、对外协调——你负责方向和内容，ta负责落地和执行细节。<strong>这是最省心也最给你充电的搭档类型。</strong></p>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">运营搭档</span><span class="role-tag role-yes">执行伙伴</span><span class="role-tag role-yes">幕后支撑</span></div>
+        </div></div>
+      </div>
+
+      <!-- 甲木 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">🌳</span><span class="tc-name">甲木型——「有力但可能越界」</span><span class="tc-stars">★★★★</span></div>
+        <div class="tc-oneliner"><strong>偏印</strong>——像大树，有主见、有规划、有自己的体系</div>
+        <div class="tc-tags"><span class="tc-tag">各管一块可以</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>ta的能力可能很强，但ta也习惯掌控。如果ta能守在自己的领域里不越界，可以是很好的战略合作者。但一旦ta开始对你的专业领域指手画脚，你会从"不舒服"快速升级到"想砍ta"。</p>
+          <p><strong>判断标准：</strong>ta给的建议是在ta的领域里还是在你的领域里？如果是在你的领域里——那不是建议，是越界。甲木型合伙人如果被你的专业"震住"了，反而会变成最有力的支持者。但如果震不住，这段合作会变成持续的能量消耗。</p>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">战略合作者</span><span class="role-tag role-yes">联合创始人</span><span class="role-tag role-no">不适合：模糊边界</span></div>
+        </div></div>
+      </div>
+
+      <!-- 火型 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">🔥</span><span class="tc-name">火型合伙人——「互相点燃也互相烧」</span><span class="tc-stars">★★★★</span></div>
+        <div class="tc-oneliner"><strong>比劫</strong>——同类共振，竞争并存</div>
+        <div class="tc-tags"><span class="tc-tag">松散联盟</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>你本身就是丙火。两个人都很有激情、都有方向感、都想做主导——<strong>但一山不容二虎。</strong></p>
+          <p>好的一面：天然共振，能快速碰撞出火花。对身弱的你来说，遇到同类会有"被撑住"的力量感。坏的一面：两个火在同一个决策链上，都觉得自己是对的，会互相消耗到没有结论。</p>
+          <p><strong>适合的合作方式：</strong>"并行不交叉"——各自负责不同的项目或客户群，共享资源和品牌，但不在同一件事上争主导权。</p>
+          <div class="tc-note"><strong>注意：</strong>火型合伙人的热情来得快去得也快。如果合作初期没有把利益和分工定清楚，等热情退了之后容易变成"互相觉得对方做得不够"。</div>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">松散联盟</span><span class="role-tag role-yes">资源互换</span><span class="role-tag role-no">不适合：深度绑定</span></div>
+        </div></div>
+      </div>
+
+      <!-- 土型 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">⛰️</span><span class="tc-name">土型合伙人——「节奏同步但在泄你的火」</span><span class="tc-stars">★★★</span></div>
+        <div class="tc-oneliner"><strong>食伤</strong>——火生土，你在生ta</div>
+        <div class="tc-tags"><span class="tc-tag">后勤支撑</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>土型合伙人跟你在一起，你会觉得节奏同步、没有压力。你在ta面前会不自觉地输出：分享想法、给建议、帮ta梳理问题。这个过程你自己可能觉得很自然、很舒服，但从能量层面看，<strong>火生土 = 你在持续泄出自己的能量。</strong></p>
+          <p>你的丙火本身就身弱，食伤泄身对你来说不是小事。跟土型合伙人在一起你会觉得"很好相处"，但时间长了可能会觉得"莫名地累"——这种累不像水型给你的压力感那么明显，它是慢性的、不容易察觉的。</p>
+          <p>另外，你跟土型之间缺少张力。你的命盘里壬水七杀两透，你的敏锐度和洞察力需要一定的刺激才能保持。土型合伙人太稳、太同频，你们之间不会产生碰撞——如果合伙人全是土型，你可能会觉得专业状态慢慢钝化。</p>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">后勤支撑</span><span class="role-tag role-yes">流程管理</span><span class="role-tag role-no">不适合：核心战略搭档</span></div>
+        </div></div>
+      </div>
+
+      <!-- 金型 -->
+      <div class="type-card" onclick="toggleCard(this)">
+        <div class="tc-header"><span class="tc-icon">⚔️</span><span class="tc-name">金型合伙人——「高效但代价最大」</span><span class="tc-stars">★★</span></div>
+        <div class="tc-oneliner"><strong>财星</strong>——你克ta，但也在持续消耗自己</div>
+        <div class="tc-tags"><span class="tc-tag">项目制合作</span></div>
+        <span class="tc-hint">＋</span>
+        <div class="tc-detail"><div class="tc-detail-inner">
+          <p>金型合伙人效率高、目标感强、做事果断。你的丙火克金，意味着你对这类合伙人天然有影响力。</p>
+          <p><strong>但持续克是最累的互动模式。</strong>金型人有自己的标准和节奏，如果跟你的不一致，ta不会妥协——ta会按自己的来，然后倒逼你配合。而且金生水——金型合伙人的存在还会间接加重你承受的外部压力。长期深度合作，你的能量消耗会双重累积。</p>
+          <div class="tc-note"><strong>注意：</strong>金型合伙人可能是最好的"推动者"——ta会逼你把想法变成行动、把服务变成产品。但如果ta的"推"变成了"控"，你会被触发。判断标准跟甲木一样：ta是在推进ta负责的事，还是在指挥你怎么做你的事？</div>
+          <div style="margin-top:12px;"><span class="role-tag role-yes">项目制合作</span><span class="role-tag role-yes">商业端搭档</span><span class="role-tag role-no">不适合：长期深度绑定</span></div>
+        </div></div>
+      </div>
+
+    </div>
+
+    <h3>类型对比</h3>
+    <p>切换查看不同类型在关键维度上的差异：</p>
+    <div class="compare-tabs" id="compareTabs">
+      <div class="compare-tab active" onclick="switchCompare(0)">乙木 vs 甲木</div>
+      <div class="compare-tab" onclick="switchCompare(1)">水型 vs 金型</div>
+      <div class="compare-tab" onclick="switchCompare(2)">火型 vs 土型</div>
+    </div>
+    <div class="compare-body" id="compareBody"></div>
+
+    <h3>合伙人匹配总览</h3>
+    <table class="summary-table">
+      <thead><tr><th>类型</th><th>对你的能量影响</th><th>匹配度</th><th>核心价值</th><th>建议占比</th></tr></thead>
+      <tbody>
+        <tr><td>🌊 水型</td><td>官杀（激发+压力）</td><td>★★★★</td><td>帮你看到盲区</td><td>1-2个顾问型</td></tr>
+        <tr><td>🌳 乙木型</td><td>正印（滋养+续能）</td><td>★★★★★</td><td>稳定支撑，给你充电</td><td>核心搭档首选</td></tr>
+        <tr><td>🌳 甲木型</td><td>偏印（支撑+可能越界）</td><td>★★★★</td><td>有战略眼光</td><td>各管一块</td></tr>
+        <tr><td>🔥 火型</td><td>比劫（同类共振）</td><td>★★★★</td><td>力量感，激情碰撞</td><td>松散联盟</td></tr>
+        <tr><td>⛰️ 土型</td><td>食伤（舒适但暗耗）</td><td>★★★</td><td>节奏匹配，不施压</td><td>后勤支撑</td></tr>
+        <tr><td>⚔️ 金型</td><td>财星（高效但双重消耗）</td><td>★★</td><td>推动力强，变现快</td><td>项目制合作</td></tr>
+      </tbody>
+    </table>
+
+    <div class="key-point">
+      <div class="label">你的理想合伙人组合</div>
+      <p>一个乙木型核心搭档（管执行和运营）+ 一到两个水型顾问（帮你校准方向）+ 金型或甲木型做项目制合作（需要的时候合，不需要就各做各的）。火型可以做松散联盟但不放核心位置，土型不是不能合作，但要格外注意边界。</p>
+    </div>
+
+  </div></div></div>
+</div>
+
+<!-- ===== 贰 ===== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-number">贰</span>
+    <span class="section-title">怎么找到对的合伙人</span>
+    <span class="section-toggle">+</span>
+  </div>
+  <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+    <p>跟获客一样，找合伙人的方式也要匹配你的能量模式。你的丙火不适合"主动去找人谈合作"。你适合的是——<strong>做你擅长的事，做到被看见，然后对的人自然会靠过来。</strong></p>
+    <p>回想一下你跟万里的合作是怎么开始的——大概率不是你在某个平台上搜"合伙人"搜到他的，而是在某个自然的场景下，你们聊了、觉得对了、就开始合作了。<strong>你的丙火在自然交流中建立信任的速度极快，这本身就是你最好的"找人方式"。</strong></p>
+
+    <div class="path-card">
+      <h4>路径一：通过你的客户和学生家长圈层</h4>
+      <p>你服务了3000+家庭，这些家长本身就是各行各业的专业人士。ta们当中可能就有适合跟你合作的人。你不需要刻意说"帮我介绍合伙人"，你只需要把服务做好——家长自己会在ta觉得合适的时候提到你。</p>
+      <p><strong>这条路径的天花板：</strong>只靠"体验过的人帮传"，增长速度会慢。你的价值必须经过体验才能传递，省力但有上限，不能只走这一条。</p>
+    </div>
+
+    <div class="path-card">
+      <h4>路径二：通过你的内容输出</h4>
+      <p>你写的案例复盘、分享的方法论、做的报告（脱敏后），都是在向外界展示"你是什么人、你做什么、你的水准怎么样"。看到这些内容并且主动找你的人，天然已经通过了第一轮筛选。</p>
+      <p><strong>时机上有一个好消息：</strong>2026年你开始走乙巳大运。乙木是你的正印，巳火是丙火的禄位——翻译成人话就是：你的口碑开始帮你说话（正印），你自身的能量底座也变厚了（巳火帮身）。过去十年你靠自己硬扛（丙午大运），接下来十年你可以开始借力了。</p>
+      <p><strong>还有一个你会明显感受到的变化：</strong>过去这十年，你的日支子水被大运午火冲着——子午冲。这个冲带来的是一种底层的不安稳感。换了乙巳大运之后，这个冲就结束了。你会觉得"稳下来了"——不是不动了，是动的时候脚下有根了。</p>
+      <div class="tc-note" style="margin:14px 0;">
+        <strong>但这十年不是"躺赢"：</strong>第一，正印可能跟你的偏财打架——如果太追求商业变现，可能反而损害口碑和贵人运。第二，不能让"被照顾"取代了"自己干活"——合伙人可以帮你分担其他环节，但"看人"这件事不能外包。
+      </div>
+      <p>你的庚金偏财透月干，写的东西天然有"落地感"——工具感强。但可能偏"硬"，温度不够。写内容的时候需要刻意保留你丙火的温度——<strong>先有人味，再有方法论，别反过来。</strong></p>
+      <p><strong>你适合的节奏：</strong>慢、重质量、有积累感。一个月2-3篇深度内容，比每天发三条朋友圈效果好得多。</p>
+    </div>
+
+    <div class="path-card">
+      <h4>路径三：通过你参与的社群和沙龙</h4>
+      <p>丙火是太阳，照射范围大、能量弥散。你在一个沙龙里不需要主动跟每个人聊，你在那里，别人就能感受到你的存在。你一开口，洞察力和温暖感会同时传递出去。你找人不靠"认识很多人"，靠<strong>"被对的人记住"</strong>。</p>
+      <p>但弥散性也有另一面：你给所有人留下好印象，不一定能跟某个特定的人建立深度连接。社群场景适合"第一次被注意到"，但从被注意到到真正合作，还需要后续的一对一深聊。</p>
+      <p><strong>"靠谱"这个气质有两面：</strong>别人因为信任你而提出合作邀请，你的本能很难拒绝——哪怕你隐约觉得不太对。不是所有信任你的人都适合跟你合作。</p>
+    </div>
+
+    <h3>你不适合的方式</h3>
+    <p><strong>不适合：主动在平台上搜索和联系。</strong>你的专业价值不容易通过文字描述传递，"主动推销自己"消耗的是你最窄的通道。</p>
+    <p><strong>不适合：被人介绍之后"谈判式"合作。</strong>你的丙火需要先感受再决策——你需要在跟一个人相处的过程中"感觉到"ta靠不靠谱。跳过感受直接谈条件，你的决策就只剩理性判断。</p>
+    <p><strong>但"感觉对了"也不等于"真的对"。</strong>丙火的温暖会让你在初期对大多数人都感觉不错。所以不是"只靠感觉"，而是<strong>感觉先行，规则跟上</strong>——感觉对了之后，该谈的事还是要谈。</p>
+
+  </div></div></div>
+</div>
+
+<!-- ===== 叁 ===== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-number">叁</span>
+    <span class="section-title">长久合作的能量管理</span>
+    <span class="section-toggle">+</span>
+  </div>
+  <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+    <p>找到对的人只是第一步。合作关系跟所有关系一样，有生命周期。从你的命盘来看，合作关系里有三个阶段最容易出问题。</p>
+    <p>2026年大运转换之后你的底层安全感会回来，守边界会比现在容易得多。带着这个认知往下看：</p>
+
+    <div class="tl-nav" id="tlNav">
+      <div class="tl-step active" onclick="goStage(0)"><div class="tl-dot">壹</div><div class="tl-label">蜜月期</div></div>
+      <div class="tl-step" onclick="goStage(1)"><div class="tl-dot">贰</div><div class="tl-label">磨合期</div></div>
+      <div class="tl-step" onclick="goStage(2)"><div class="tl-dot">叁</div><div class="tl-label">稳定期</div></div>
+    </div>
+    <div class="tl-body" id="tlBody"></div>
+    <div class="tl-nav-btns">
+      <button class="tl-btn" id="tlPrev" onclick="goStage(currentStage-1)" disabled>← 上一阶段</button>
+      <button class="tl-btn" id="tlNext" onclick="goStage(currentStage+1)">下一阶段 →</button>
+    </div>
+
+    <h3 style="margin-top:36px;">长久合作的底层原则</h3>
+    <p>把三个阶段串起来，其实就是三件事：</p>
+    <div class="key-point"><p><strong>蜜月期：把规则说清楚。</strong>你先提，比等对方提好。</p></div>
+    <div class="key-point"><p><strong>磨合期：让做了的事被看见。</strong>定期同步，不是汇报，是保护关系。</p></div>
+    <div class="key-point"><p><strong>稳定期：监测自己的能量。</strong>在忍之前就说，在消耗之前就调。</p></div>
+    <p>这三件事如果都做到了，你遇到"好合伙人"的概率不会变（那取决于缘分），但你在一段合作关系里"不受伤"的概率会大幅提升。</p>
+
+  </div></div></div>
+</div>
+
+<!-- ===== 肆 ===== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-number">肆</span>
+    <span class="section-title">合伙人速判工具</span>
+    <span class="section-toggle">+</span>
+  </div>
+  <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+    <h3>速判三问</h3>
+    <p>跟新的合伙人接触时，注意这三个信号。选出你观察到的情况，三题答完自动给出判断：</p>
+
+    <div class="check-q">
+      <div class="check-q-title">信号一：ta怎么看待你做的事？</div>
+      <div class="check-options">
+        <div class="check-opt" onclick="selectCheck(this,0,'green')"><div class="check-dot dot-green"></div><div class="check-opt-text">"超级落地""这个东西真好用"——看到了你的专业价值</div></div>
+        <div class="check-opt" onclick="selectCheck(this,0,'yellow')"><div class="check-dot dot-yellow"></div><div class="check-opt-text">"你这个挺有意思的"——好奇但没有深度认可</div></div>
+        <div class="check-opt" onclick="selectCheck(this,0,'red')"><div class="check-dot dot-red"></div><div class="check-opt-text">"你能帮我做个XX吗"——把你当工具人</div></div>
+      </div>
+    </div>
+    <div class="check-q">
+      <div class="check-q-title">信号二：ta在合作中怎么处理分歧？</div>
+      <div class="check-options">
+        <div class="check-opt" onclick="selectCheck(this,1,'green')"><div class="check-dot dot-green"></div><div class="check-opt-text">说出来，讨论，各退一步——成熟型</div></div>
+        <div class="check-opt" onclick="selectCheck(this,1,'yellow')"><div class="check-dot dot-yellow"></div><div class="check-opt-text">不说，但按自己的来——控制型</div></div>
+        <div class="check-opt" onclick="selectCheck(this,1,'red')"><div class="check-dot dot-red"></div><div class="check-opt-text">情绪化，或者"我们关系这么好你还计较"——边界模糊型</div></div>
+      </div>
+    </div>
+    <div class="check-q">
+      <div class="check-q-title">信号三：ta的行动和承诺是否匹配？</div>
+      <div class="check-options">
+        <div class="check-opt" onclick="selectCheck(this,2,'green')"><div class="check-dot dot-green"></div><div class="check-opt-text">说到做到，做完了还会主动同步——靠谱型</div></div>
+        <div class="check-opt" onclick="selectCheck(this,2,'yellow')"><div class="check-dot dot-yellow"></div><div class="check-opt-text">说得好听，做的时候打折扣——需要观察</div></div>
+        <div class="check-opt" onclick="selectCheck(this,2,'red')"><div class="check-dot dot-red"></div><div class="check-opt-text">总在"计划"但不动——大概率不是执行型</div></div>
+      </div>
+    </div>
+    <div class="check-result" id="checkResult"></div>
+
+    <h3>红灯信号清单</h3>
+    <p>无论什么类型，出现这些信号就要慎重：</p>
+    <div class="red-flag"><strong>"我们先做起来再说规则"</strong>——磨合期不会主动提。等你提的时候ta会说"怎么突然这么功利"</div>
+    <div class="red-flag"><strong>"你不是很擅长这个吗，你来吧"</strong>——用夸奖让你接活儿。你听到这句话会本能地接——但接了就是在重复"默默多做"的链条</div>
+    <div class="red-flag"><strong>合作谈的都是感情和愿景，具体的分工、时间线、交付物一直定不下来</strong>——用"关系好"替代"把事做好"</div>
+    <div class="red-flag"><strong>分歧的时候甩情绪而不是谈问题</strong>——你会吸收对方的情绪，你以为你在帮ta，其实你在被消耗</div>
+    <div class="red-flag"><strong>ta的圈子里没有长期合作关系</strong>——说明ta跟谁都合不长久，问题不在你</div>
+
+    <h3>合伙启动前对齐清单</h3>
+    <p>决定跟一个人合作之前，确认这五件事有答案：</p>
+    <div class="align-list">
+      <div class="align-item"><span class="align-num">1</span><span><strong>各自负责什么？</strong>不是"我们一起做"，是"你做A我做B"</span></div>
+      <div class="align-item"><span class="align-num">2</span><span><strong>利益怎么分？</strong>不是"到时候再说"，是"你觉得怎么分？"</span></div>
+      <div class="align-item"><span class="align-num">3</span><span><strong>什么时候对齐？</strong>定一个固定节奏，不等有问题才聊</span></div>
+      <div class="align-item"><span class="align-num">4</span><span><strong>如果做不下去了怎么办？</strong>退出机制现在谈最不伤感情</span></div>
+      <div class="align-item"><span class="align-num">5</span><span><strong>各自的底线是什么？</strong>你的底线是"不被控制"和"价值被看见"，ta的呢？</span></div>
+    </div>
+    <p>这五个问题在蜜月期聊完，后面的路会顺得多。</p>
+
+  </div></div></div>
+</div>
+
+<!-- ===== 后续 ===== -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-number">续</span>
+    <span class="section-title">后续</span>
+    <span class="section-toggle">+</span>
+  </div>
+  <div class="section-body"><div class="section-body-inner"><div class="section-content">
+
+    <p>这份报告帮你建了三层东西：类型图谱（看人）、找人路径（找人）、能量管理（经营关系）。</p>
+    <p>类型图谱基于行为特征判断，不需要知道对方的八字就能用。但如果你有对方的八字，可以做更精细的一层——合盘分析。合盘看的是两张完整盘之间所有元素的互动关系，不只是日元对日元，会告诉你"为什么这个人跟你在一起时呈现出这种能量"。行为分类帮你快速判断，合盘帮你看得更深——两者是递进关系。</p>
+
+    <table class="next-table">
+      <thead><tr><th>你遇到的情况</th><th>可以做什么</th><th>需要你提供什么</th></tr></thead>
+      <tbody>
+        <tr><td>在考虑跟某个人合作</td><td>双人合盘分析——看能量流向、互补点和风险点</td><td>对方出生年月日时</td></tr>
+        <tr><td>想看整个团队的配置</td><td>团队能量组合诊断——谁跟谁搭最合适、分工怎么调</td><td>团队成员出生信息</td></tr>
+        <tr><td>合作中遇到具体卡点</td><td>围绕场景做深度拆解——从命理角度看卡在哪</td><td>具体发生了什么 + 对方信息</td></tr>
+        <tr><td>想看某个合作的时机</td><td>结合大运流年判断——什么时候推进、什么时候缓</td><td>合作的大致方向和时间范围</td></tr>
+        <tr><td>乙巳大运开始后感受到变化</td><td>校准十年发展节奏</td><td>你的真实感受和新的困惑</td></tr>
+      </tbody>
+    </table>
+
+    <div class="closing-quote">你的丙火在合作里是天然的发光源。保护好你的火，不是不给，是给对的人、用对的方式给。<br>万里已经证明了——当你的光照到对的人身上，ta不只会感受到，还会用行动照回来。</div>
+
+  </div></div></div>
+</div>
+
+<footer class="footer">
+  <p>命理能量与合伙关系分析 · 完整版</p>
+</footer>
+
+</div>
+
+<script>
+const PASS = 'yixin913';
+function checkPwd(){
+  const input=document.getElementById('pwd-input').value;
+  if(input===PASS){document.getElementById('lock-screen').style.display='none';document.getElementById('report-content').style.display='block';}
+  else{document.getElementById('pwd-error').textContent='密码不正确，请重试';document.getElementById('pwd-input').value='';document.getElementById('pwd-input').style.borderColor='var(--red)';setTimeout(()=>{document.getElementById('pwd-error').textContent='';document.getElementById('pwd-input').style.borderColor='var(--border)';},2000);}
+}
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('pwd-input').addEventListener('keydown',(e)=>{if(e.key==='Enter')checkPwd();});});
+
+function toggleSection(header){header.classList.toggle('active');header.nextElementSibling.classList.toggle('open');}
+
+function toggleCard(card){const wasActive=card.classList.contains('active');document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));if(!wasActive)card.classList.add('active');}
+
+// Compare
+const compareData=[
+  {title:'乙木（正印）vs 甲木（偏印）',sub:'都是木型，支撑方式截然不同',
+   cols:[{label:'乙木型',text:'像藤蔓，温和配合，尊重你的判断。默默帮你做事，给你充电。最省心的搭档。'},{label:'甲木型',text:'像大树，有主见有体系。能力可能很强，但习惯掌控。踩不好会变成持续消耗。'}],
+   bars:[{label:'给你充电',a:95,b:60,color:'var(--wood)'},{label:'越界风险',a:10,b:75,color:'var(--fire)'},{label:'执行力',a:80,b:50,color:'var(--water)'}]},
+  {title:'水型（官杀）vs 金型（财星）',sub:'都能激发你，代价完全不同',
+   cols:[{label:'水型',text:'懂你、看到盲区、给有价值的反馈。激发洞察力，但焦虑会传染。'},{label:'金型',text:'效率高、推动力强。但持续克最累，能量消耗双重累积。'}],
+   bars:[{label:'激发洞察',a:90,b:40,color:'var(--water)'},{label:'能量消耗',a:55,b:90,color:'var(--fire)'},{label:'推动执行',a:25,b:85,color:'var(--earth)'}]},
+  {title:'火型（比劫）vs 土型（食伤）',sub:'一个太刺激，一个太舒适',
+   cols:[{label:'火型',text:'天然共振、激情碰撞。但都想做主导，互相消耗到没有结论。'},{label:'土型',text:'节奏同步、不施压。但你在不自觉地持续输出，慢性泄耗不易察觉。'}],
+   bars:[{label:'碰撞火花',a:95,b:15,color:'var(--fire)'},{label:'隐性消耗',a:40,b:80,color:'var(--earth)'},{label:'张力刺激',a:85,b:10,color:'var(--water)'}]}
+];
+function switchCompare(idx){
+  document.querySelectorAll('.compare-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  const d=compareData[idx];
+  let h=`<div class="cb-title">${d.title}</div><div class="cb-sub">${d.sub}</div><div class="compare-row">`;
+  d.cols.forEach(c=>{h+=`<div class="compare-col"><div class="ccl">${c.label}</div><p>${c.text}</p></div>`;});
+  h+='</div>';
+  d.bars.forEach(b=>{h+=`<div class="bar-wrap"><div class="bar-label">${b.label}</div><div style="display:flex;gap:8px"><div style="flex:1"><div class="bar-track"><div class="bar-fill" style="width:${b.a}%;background:${b.color};opacity:0.7"></div></div></div><div style="flex:1"><div class="bar-track"><div class="bar-fill" style="width:${b.b}%;background:${b.color};opacity:0.35"></div></div></div></div></div>`;});
+  document.getElementById('compareBody').innerHTML=h;
+}
+switchCompare(0);
+
+// Signal check
+const checkState=[null,null,null];
+function selectCheck(el,q,c){
+  el.parentNode.querySelectorAll('.check-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');checkState[q]=c;
+  if(checkState.filter(v=>v!==null).length===3){
+    const r=checkState.filter(v=>v==='red').length,y=checkState.filter(v=>v==='yellow').length;
+    let m='';
+    if(r>=2) m='<strong style="color:var(--red)">两个以上红灯亮起。</strong>不管对方多有资源、多有能力，合作的能量消耗大概率会超过收益。建议不进入深度合作。';
+    else if(r===1&&y>=1) m='<strong style="color:var(--earth)">一红一黄，需要谨慎。</strong>可以做短期项目制合作观察，但不建议马上深度绑定。重点观察红灯那个维度是否会改善。';
+    else if(y>=2) m='<strong style="color:var(--earth)">没有红灯但黄灯较多。</strong>对方可能不是"坏搭档"，但匹配度存疑。建议从小项目开始试，边合作边观察。';
+    else m='<strong style="color:var(--wood)">信号良好。</strong>这个人在关键维度上的表现是健康的。可以进入下一步——用"合伙启动前对齐清单"谈具体事项。';
+    const res=document.getElementById('checkResult');res.innerHTML=m;res.classList.add('show');
+  }
+}
+
+// Timeline stepper
+let currentStage=0;
+const stages=[
+  {title:'蜜月期 · 最容易忽略的窗口',sub:'合作刚开始，一切都很顺',
+   body:'<p>丙火的感染力让一切都很顺——你们聊得投机、方向一致、互相欣赏。这个阶段感觉不需要谈规则，"反正我们这么合拍"。</p><p><strong>但这恰恰是最该谈规则的时候。</strong>蜜月期谈规则不是"你不信任我"，是"趁我们都还开心的时候把规则定好，这样以后不开心的时候不用吵"。</p><p>你的丙火可能会觉得"谈这些太功利了"。但体验版已经拆过——你不谈不是因为你不在意，是因为表达通道窄。你心里很清楚该怎么分、该怎么做，只是不说。不说的后果是：等对方做了不对的事，情绪瞬间爆发。</p>',
+   actions:['各自负责什么','利益怎么分','什么时候对齐','退出机制']},
+  {title:'磨合期 · 委屈积累的高危区',sub:'合作进入日常，你的本能开始接活',
+   body:'<p>你的本能会开始接过那些"对方没做到位"的事情。你的表达通道窄让你不说。一天一天地，你做的比对方多，但看起来差不多。</p><p><strong>这个阶段最需要的是"信息透明"。</strong></p><p>每次对齐的时候，各自说一下"这段时间我做了什么"。不是汇报，是同步。这个动作做了，两件事会自动发生：一是对方知道你做了多少（你的付出被看见了），二是如果不均衡，会自然暴露出来——不需要你来指出"我做得比你多"，数据本身会说话。</p><p>该说的是你做了什么事实，不该说的是你为此付出了多少情感。</p>',
+   actions:['定期同步"我做了什么"','说事实，不说情感','让数据本身暴露不均衡']},
+  {title:'稳定期 · 监测两个信号',sub:'稳定不等于安全',
+   body:'<p>如果蜜月期谈了规则、磨合期做了信息透明，合作关系大概率会进入稳定状态。但即使到了稳定期，也需要定期检查两个信号：</p><p><strong>信号一：你是否开始"忍"了？</strong>你的命盘结构里，"忍"是默认模式。如果你发现自己在某段合伙关系里开始忍——忍对方的迟到、忍对方的不上心、忍利益分配上的不合理——这是预警信号。忍的尽头不是接受，是爆发。</p><p><strong>信号二：你是否还有能量？</strong>如果一段合作让你越来越累、越来越不想动、觉得"做这些事没意思了"——不是你的问题，是这段合作在额外消耗你。跟ta在一起的感觉是"被补充"还是"被消耗"？</p>',
+   actions:['在忍之前就说','在消耗之前就调','被补充 vs 被消耗']}
+];
+function goStage(i){
+  if(i<0||i>=stages.length)return;currentStage=i;
+  document.querySelectorAll('.tl-step').forEach((s,j)=>{s.classList.remove('active','done');if(j<i)s.classList.add('done');if(j===i)s.classList.add('active');});
+  const d=stages[i];
+  let h=`<div class="tl-title">${d.title}</div><div class="tl-sub">${d.sub}</div>${d.body}<div class="tl-actions">`;
+  d.actions.forEach(a=>{h+=`<span class="tl-action">${a}</span>`;});
+  h+='</div>';
+  document.getElementById('tlBody').innerHTML=h;
+  document.getElementById('tlPrev').disabled=i===0;
+  document.getElementById('tlNext').disabled=i===stages.length-1;
+}
+goStage(0);
+</script>
+</body>
+</html>
