@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>能量地图 × 2026丙午年运指南</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg: #F5F0E8;
+  --bg-card: #FFFDF7;
+  --bg-deep: #EDE8DC;
+  --ink: #2C2416;
+  --ink-light: #5C5040;
+  --ink-muted: #8A7E6C;
+  --ink-faint: #B8AD9C;
+  --cinnabar: #C04835;
+  --cinnabar-light: #E8CECC;
+  --indigo: #2B4570;
+  --indigo-light: #C8D4E4;
+  --gold-accent: #B8963E;
+  --gold-light: #F0E6C8;
+  --jade: #5B8C6F;
+  --jade-light: #D4E4D8;
+  --fire: #D4633B;
+  --water: #3B6EA0;
+  --wood: #5B8C6F;
+  --metal: #9E8E6E;
+  --earth: #C4A45A;
+  --shadow: rgba(44, 36, 22, 0.06);
+  --shadow-md: rgba(44, 36, 22, 0.1);
+  --border: rgba(44, 36, 22, 0.08);
+  --radius: 8px;
+  --serif: 'Noto Serif SC', 'Songti SC', serif;
+  --sans: 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══ Password Screen ═══ */
+#password-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#password-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.pw-container {
+  text-align: center;
+  padding: 40px;
+  animation: fadeUp 0.8s ease;
+}
+.pw-seal {
+  margin: 0 auto 36px;
+}
+.pw-seal-circle {
+  width: 100px; height: 100px;
+  border: 1.5px solid var(--ink-faint);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.pw-seal-main {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cinnabar);
+  letter-spacing: 6px;
+  line-height: 1.3;
+  text-align: center;
+}
+.pw-dedication {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--ink-muted);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+.pw-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink-light);
+  margin-bottom: 32px;
+  letter-spacing: 6px;
+}
+.pw-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+.pw-input {
+  font-family: var(--sans);
+  font-size: 15px;
+  padding: 12px 20px;
+  border: 1px solid var(--ink-faint);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--ink);
+  width: 200px;
+  outline: none;
+  transition: border-color 0.3s;
+  letter-spacing: 4px;
+  text-align: center;
+}
+.pw-input:focus { border-color: var(--cinnabar); }
+.pw-input::placeholder { letter-spacing: 1px; color: var(--ink-faint); }
+.pw-btn {
+  font-family: var(--serif);
+  font-size: 14px;
+  padding: 12px 24px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.pw-btn:hover { background: var(--cinnabar); border-color: var(--cinnabar); }
+.pw-error {
+  color: var(--cinnabar);
+  font-size: 13px;
+  margin-top: 16px;
+  min-height: 20px;
+}
+
+/* ═══ Main Layout ═══ */
+#main-content { display: none; }
+#main-content.visible { display: block; }
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ═══ Nav ═══ */
+.side-nav {
+  position: fixed;
+  top: 50%;
+  left: max(12px, calc((100vw - 800px) / 2 - 180px));
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.nav-item {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-left: 2px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.nav-item:hover, .nav-item.active {
+  color: var(--ink);
+  border-left-color: var(--cinnabar);
+}
+.nav-sub {
+  font-size: 11px;
+  padding-left: 20px;
+  color: var(--ink-faint);
+}
+.nav-sub:hover, .nav-sub.active { color: var(--ink-muted); border-left-color: var(--gold-accent); }
+
+/* ═══ Hero ═══ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--ink-faint), transparent);
+  animation: breathe 3s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+.hero-wuxing {
+  display: flex; gap: 16px; margin-bottom: 40px;
+  opacity: 0; animation: fadeUp 1s ease 0.2s forwards;
+}
+.wuxing-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  opacity: 0.5;
+}
+
+.hero-for {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+  opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 200;
+  letter-spacing: 8px;
+  margin-bottom: 12px;
+  opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
+}
+.hero-sub {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--ink-muted);
+  letter-spacing: 6px;
+  margin-bottom: 48px;
+  opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+}
+.hero-dedication {
+  max-width: 420px;
+  margin: 0 auto 40px;
+  opacity: 0; animation: fadeUp 1s ease 0.6s forwards;
+}
+.hero-dedication p {
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 2.2;
+  color: var(--ink-light);
+  font-weight: 300;
+  text-align: center;
+}
+.hero-dedication-highlight {
+  font-size: 16px !important;
+  color: var(--ink) !important;
+  font-weight: 400 !important;
+  margin: 16px 0;
+}
+.hero-pillars {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  opacity: 0; animation: fadeUp 1s ease 0.8s forwards;
+}
+.hero-pillar { text-align: center; }
+.hero-pillar-char {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+}
+.hero-pillar-label {
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ Section ═══ */
+.section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+.section-label {
+  font-family: var(--serif);
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 3.5vw, 30px);
+  font-weight: 400;
+  letter-spacing: 4px;
+  margin-bottom: 48px;
+}
+
+/* ═══ Preamble ═══ */
+.preamble {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 2.2;
+  color: var(--ink-light);
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 60px 24px;
+  font-weight: 300;
+}
+
+/* ═══ Info Grid ═══ */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.info-cell {
+  background: var(--bg-card);
+  padding: 20px;
+  text-align: center;
+}
+.info-cell-label {
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.info-cell-value {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* ═══ Bazi Table ═══ */
+.bazi-table {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.bazi-pillar {
+  text-align: center;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.bazi-pillar:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+.bazi-pillar-label {
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+.bazi-tiangan {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.bazi-tiangan-note {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-bottom: 16px;
+}
+.bazi-dizhi {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 4px;
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+}
+.bazi-dizhi-note {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 8px;
+}
+.bazi-self { border-color: var(--cinnabar); border-width: 2px; }
+.bazi-self .bazi-tiangan { color: var(--cinnabar); }
+
+/* ═══ Collapsible ═══ */
+.collapsible {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+}
+.collapsible-header:hover { background: var(--bg-deep); }
+.collapsible-title {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+}
+.collapsible-arrow {
+  font-size: 12px;
+  color: var(--ink-muted);
+  transition: transform 0.3s;
+}
+.collapsible.open .collapsible-arrow { transform: rotate(180deg); }
+.collapsible-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.collapsible.open .collapsible-body { grid-template-rows: 1fr; }
+.collapsible-body-inner {
+  overflow: hidden;
+}
+.collapsible-content {
+  padding: 0 24px 24px;
+  font-size: 14.5px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+
+/* ═══ Radar Chart ═══ */
+.radar-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+/* ═══ Energy Badges ═══ */
+.energy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+.energy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.energy-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+.energy-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+}
+.energy-card[data-element="metal"]::before { background: var(--metal); }
+.energy-card[data-element="wood"]::before { background: var(--wood); }
+.energy-card[data-element="fire"]::before { background: var(--fire); }
+.energy-card[data-element="water"]::before { background: var(--water); }
+.energy-card[data-element="earth"]::before { background: var(--earth); }
+.energy-num {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.energy-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.energy-tagline {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-bottom: 16px;
+}
+.energy-desc {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+.energy-quote {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--bg-deep);
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* ═══ Personality Layers ═══ */
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin: 40px 0;
+}
+.layer-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  cursor: default;
+  position: relative;
+}
+.layer-ring:hover { transform: scale(1.05); }
+.layer-ring-label {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.layer-ring-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.layer-tooltip {
+  position: absolute;
+  left: calc(100% + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  line-height: 1.6;
+  width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 10;
+}
+.layer-ring:hover .layer-tooltip { opacity: 1; }
+
+/* ═══ Dayun Timeline ═══ */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+  margin: 32px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px; top: 0;
+  width: 1px; height: 100%;
+  background: var(--border);
+}
+.timeline-item {
+  position: relative;
+  padding: 0 0 32px 28px;
+}
+.timeline-dot {
+  position: absolute;
+  left: -20px; top: 4px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  border: 2px solid var(--bg);
+}
+.timeline-item.current .timeline-dot {
+  background: var(--cinnabar);
+  box-shadow: 0 0 0 4px var(--cinnabar-light);
+}
+.timeline-item.future .timeline-dot { background: var(--ink-faint); opacity: 0.5; }
+.timeline-item.highlight .timeline-dot { background: var(--gold-accent); }
+.timeline-year {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--ink-muted);
+  letter-spacing: 1px;
+}
+.timeline-title {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 4px 0;
+}
+.timeline-desc {
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  line-height: 1.8;
+}
+.timeline-item.current {
+  background: var(--bg-card);
+  margin-left: -12px;
+  padding: 20px 20px 20px 40px;
+  border-radius: var(--radius);
+  border: 1px solid var(--cinnabar-light);
+}
+.timeline-item.current .timeline-dot { left: -8px; }
+
+/* ═══ Year Assessment Table ═══ */
+.assess-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 32px 0;
+}
+.assess-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+.assess-label {
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.assess-stars {
+  font-size: 14px;
+  color: var(--gold-accent);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+.assess-note {
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+
+/* ═══ Monthly Cards ═══ */
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+.month-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.month-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow); }
+.month-card.highlight { border-color: var(--cinnabar-light); }
+.month-card.warning { border-color: #E8C8A0; }
+.month-card.highlight::after {
+  content: '关键月';
+  position: absolute; top: 12px; right: 12px;
+  font-size: 10px; letter-spacing: 2px;
+  color: var(--cinnabar);
+  background: var(--cinnabar-light);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.month-card.warning::after {
+  content: '需警惕';
+  position: absolute; top: 12px; right: 12px;
+  font-size: 10px; letter-spacing: 2px;
+  color: #A07030;
+  background: #F0E6C8;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.month-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.month-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+}
+.month-info {
+  flex: 1;
+}
+.month-ganzhi {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink-light);
+}
+.month-stars {
+  font-size: 12px;
+  color: var(--gold-accent);
+  letter-spacing: 1px;
+}
+.month-keyword {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--indigo);
+  background: var(--indigo-light);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.month-body {
+  font-size: 13.5px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+.month-advice {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.month-advice strong {
+  color: var(--ink-light);
+  font-weight: 500;
+}
+
+/* ═══ Annual Energy Curve ═══ */
+.curve-container {
+  margin: 40px 0;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.curve-container svg { width: 100%; height: auto; }
+
+/* ═══ Action List ═══ */
+.action-section { margin: 32px 0; }
+.action-level {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.action-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.action-dot.red { background: var(--cinnabar); }
+.action-dot.yellow { background: var(--gold-accent); }
+.action-dot.green { background: var(--jade); }
+.action-item {
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+.action-item.red-bg { background: rgba(192, 72, 53, 0.06); }
+.action-item.yellow-bg { background: rgba(184, 150, 62, 0.06); }
+.action-item.green-bg { background: rgba(91, 140, 111, 0.06); }
+.action-num {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 8px;
+}
+
+/* ═══ Closing ═══ */
+.closing {
+  padding: 80px 0;
+  text-align: center;
+}
+.closing-text {
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 2.4;
+  color: var(--ink-light);
+  max-width: 560px;
+  margin: 0 auto 40px;
+  font-weight: 300;
+}
+.closing-highlight {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 24px 0;
+}
+.closing-reminders {
+  text-align: left;
+  max-width: 480px;
+  margin: 40px auto 0;
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.closing-reminder-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+.closing-reminder-item:last-child { border-bottom: none; }
+
+/* ═══ Footer ═══ */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 1100px) {
+  .side-nav { display: none; }
+}
+
+/* ═══ Mobile Nav ═══ */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(245, 240, 232, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  z-index: 100;
+  padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.mobile-nav::-webkit-scrollbar { display: none; }
+.mobile-nav a {
+  display: inline-block;
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav a.active { background: var(--ink); color: var(--bg); }
+@media (max-width: 1100px) { .mobile-nav { display: flex; } }
+@media (max-width: 1100px) { #main-content.visible { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); } }
+
+/* Touch-friendly: disable hover lift on touch devices */
+@media (hover: none) {
+  .month-card:hover,
+  .energy-card:hover,
+  .bazi-pillar:hover { transform: none; box-shadow: none; }
+  .collapsible-header:hover { background: transparent; }
+}
+
+/* ═══ Mobile Responsive ═══ */
+@media (max-width: 600px) {
+  html { font-size: 15px; }
+  .container { padding: 0 16px; }
+  .section { padding: 48px 0; }
+  .section-title { font-size: 22px; letter-spacing: 2px; margin-bottom: 32px; }
+  .hero { min-height: 80vh; padding: 40px 16px; }
+  .hero-title { letter-spacing: 4px; }
+  .hero-sub { letter-spacing: 3px; font-size: 13px; }
+  .hero::after { height: 40px; bottom: 24px; }
+  .hero-for { letter-spacing: 3px; font-size: 11px; }
+  .hero-dedication { margin-bottom: 32px; }
+  .hero-dedication p { font-size: 13px; }
+  .hero-dedication-highlight { font-size: 15px !important; }
+  .hero-pillars { gap: 16px; }
+  .hero-pillar-char { font-size: 16px; }
+  .pw-seal-circle { width: 88px; height: 88px; }
+  .pw-seal-main { font-size: 18px; letter-spacing: 4px; }
+  .preamble { padding: 40px 16px; font-size: 14px; line-height: 2; }
+
+  /* Info grid - 2 cols on mobile */
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .info-cell { padding: 14px 10px; }
+  .info-cell-value { font-size: 14px; }
+
+  /* Bazi table - 2x2 on mobile */
+  .bazi-table { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .bazi-pillar { padding: 16px 10px; }
+  .bazi-tiangan { font-size: 24px; }
+  .bazi-dizhi { width: 40px; height: 40px; font-size: 17px; }
+
+  /* Collapsible */
+  .collapsible-header { padding: 16px; }
+  .collapsible-title { font-size: 15px; gap: 8px; }
+  .collapsible-content { padding: 0 16px 16px; font-size: 14px; }
+
+  /* Energy cards */
+  .energy-card { padding: 20px 16px; }
+  .energy-name { font-size: 16px; }
+  .energy-quote { padding: 12px 14px; font-size: 13px; }
+
+  /* Personality layers - smaller on mobile, no tooltip */
+  .layer-stack { gap: 0; }
+  .layer-ring:nth-child(1) { width: 200px !important; height: 200px !important; }
+  .layer-ring:nth-child(2) { width: 155px !important; height: 155px !important; margin-top: -32px !important; }
+  .layer-ring:nth-child(3) { width: 115px !important; height: 115px !important; margin-top: -24px !important; }
+  .layer-ring:nth-child(4) { width: 75px !important; height: 75px !important; margin-top: -16px !important; }
+  .layer-ring-label { font-size: 11px; }
+  .layer-ring-sub { font-size: 10px; }
+  .layer-tooltip { display: none; }
+
+  /* Timeline */
+  .timeline { padding-left: 16px; }
+  .timeline-item { padding: 0 0 24px 20px; }
+  .timeline-item.current { padding: 16px 12px 16px 32px; margin-left: -8px; }
+  .timeline-title { font-size: 15px; }
+
+  /* Assessment grid */
+  .assess-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .assess-item { padding: 12px; }
+
+  /* Monthly cards - single column */
+  .month-grid { grid-template-columns: 1fr; gap: 12px; }
+  .month-card { padding: 18px 16px; }
+  .month-num { font-size: 24px; }
+  .month-body { font-size: 13px; }
+  .month-advice { font-size: 12.5px; }
+
+  /* Energy curve - scrollable on small screens */
+  .curve-container { padding: 16px 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .curve-container svg { min-width: 560px; }
+
+  /* Action items */
+  .action-item { padding: 12px 14px; font-size: 13.5px; }
+
+  /* Closing */
+  .closing-text { font-size: 14px; line-height: 2.2; }
+  .closing-highlight { font-size: 15px; }
+  .closing-reminders { padding: 20px 16px; margin: 32px auto 0; }
+  .closing-reminder-item { font-size: 13.5px; padding: 10px 0; }
+
+  /* Password screen */
+  .pw-input-wrap { flex-direction: column; gap: 10px; }
+  .pw-input { width: 180px; }
+  .pw-seal { width: 64px; height: 64px; font-size: 24px; margin-bottom: 24px; }
+  .pw-title { font-size: 18px; }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .container { padding: 0 12px; }
+  .bazi-table { gap: 6px; }
+  .bazi-pillar { padding: 12px 6px; }
+  .bazi-tiangan { font-size: 20px; }
+  .month-card { padding: 14px 12px; }
+  .assess-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .info-grid { grid-template-columns: 1fr 1fr; }
+  .layer-ring:nth-child(1) { width: 170px !important; height: 170px !important; }
+  .layer-ring:nth-child(2) { width: 130px !important; height: 130px !important; }
+  .layer-ring:nth-child(3) { width: 95px !important; height: 95px !important; }
+  .layer-ring:nth-child(4) { width: 65px !important; height: 65px !important; }
+}
+
+/* ═══ Scroll animations ═══ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible-anim {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- Password Screen -->
+<div id="password-screen">
+  <div class="pw-container">
+    <div class="pw-seal">
+      <div class="pw-seal-circle">
+        <span class="pw-seal-main">初春<br>之山</span>
+      </div>
+    </div>
+    <div class="pw-dedication">这份地图为你而绘</div>
+    <div class="pw-title">能量地图</div>
+    <div class="pw-input-wrap">
+      <input type="password" class="pw-input" id="pw-input" placeholder="····" maxlength="20" />
+      <button class="pw-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="main-content">
+
+<!-- Side Nav -->
+<nav class="side-nav" id="side-nav">
+  <a href="#part1" class="nav-item" data-section="part1">壹 · 能量配置</a>
+  <a href="#part2" class="nav-item" data-section="part2">贰 · 大运全景</a>
+  <a href="#part3" class="nav-item" data-section="part3">叁 · 丙午年运</a>
+  <a href="#monthly" class="nav-sub" data-section="monthly">逐月指南</a>
+  <a href="#part4" class="nav-item" data-section="part4">肆 · 行动清单</a>
+  <a href="#closing" class="nav-item" data-section="closing">写给爱马</a>
+</nav>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="#part1" data-section="part1">能量配置</a>
+  <a href="#part2" data-section="part2">大运</a>
+  <a href="#part3" data-section="part3">年运</a>
+  <a href="#monthly" data-section="monthly">逐月</a>
+  <a href="#part4" data-section="part4">行动</a>
+  <a href="#closing" data-section="closing">寄语</a>
+</nav>
+
+<div class="container">
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-wuxing">
+    <div class="wuxing-dot" style="background:var(--metal)"></div>
+    <div class="wuxing-dot" style="background:var(--wood)"></div>
+    <div class="wuxing-dot" style="background:var(--earth)"></div>
+    <div class="wuxing-dot" style="background:var(--fire)"></div>
+    <div class="wuxing-dot" style="background:var(--water)"></div>
+  </div>
+  <div class="hero-for">FOR AIMA</div>
+  <h1 class="hero-title">你的能量地图</h1>
+  <p class="hero-sub">2026 丙午年运指南</p>
+  <div class="hero-dedication">
+    <p>从手术刀到创业，从三甲到近亿投资</p>
+    <p class="hero-dedication-highlight">这座大山一路披荆斩棘</p>
+    <p>2026，太阳终于升起</p>
+  </div>
+  <div class="hero-pillars">
+    <div class="hero-pillar"><div class="hero-pillar-char">辛酉</div><div class="hero-pillar-label">年 柱</div></div>
+    <div class="hero-pillar"><div class="hero-pillar-char">庚寅</div><div class="hero-pillar-label">月 柱</div></div>
+    <div class="hero-pillar"><div class="hero-pillar-char" style="color:var(--cinnabar)">戊寅</div><div class="hero-pillar-label">日 柱</div></div>
+    <div class="hero-pillar"><div class="hero-pillar-char">辛酉</div><div class="hero-pillar-label">时 柱</div></div>
+  </div>
+</header>
+
+<!-- Preamble -->
+<div class="preamble fade-in">
+  八字不是命运判决书，而是一张能量地图。<br>
+  它告诉你天生带了什么"配置"、当下处于什么"气候"，<br>
+  但走哪条路、做什么选择，永远是你自己说了算。
+</div>
+
+<!-- PART 1 -->
+<section class="section" id="part1">
+  <div class="section-label fade-in">第一部分</div>
+  <h2 class="section-title fade-in">你的能量配置</h2>
+
+  <div class="info-grid fade-in">
+    <div class="info-cell">
+      <div class="info-cell-label">阳历</div>
+      <div class="info-cell-value">1981.3.1</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">时辰</div>
+      <div class="info-cell-value">18:30</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">日主</div>
+      <div class="info-cell-value" style="color:var(--earth)">戊土 · 大山</div>
+    </div>
+    <div class="info-cell">
+      <div class="info-cell-label">月令</div>
+      <div class="info-cell-value">寅木 · 初春</div>
+    </div>
+  </div>
+
+  <!-- Bazi Table -->
+  <div class="bazi-table fade-in">
+    <div class="bazi-pillar">
+      <div class="bazi-pillar-label">年 柱</div>
+      <div class="bazi-tiangan">辛</div>
+      <div class="bazi-tiangan-note">伤官</div>
+      <div class="bazi-dizhi" style="background:var(--metal)">酉</div>
+      <div class="bazi-dizhi-note">金</div>
+    </div>
+    <div class="bazi-pillar">
+      <div class="bazi-pillar-label">月 柱</div>
+      <div class="bazi-tiangan">庚</div>
+      <div class="bazi-tiangan-note">食神</div>
+      <div class="bazi-dizhi" style="background:var(--wood)">寅</div>
+      <div class="bazi-dizhi-note">木</div>
+    </div>
+    <div class="bazi-pillar bazi-self">
+      <div class="bazi-pillar-label">日 柱</div>
+      <div class="bazi-tiangan">戊</div>
+      <div class="bazi-tiangan-note">日主</div>
+      <div class="bazi-dizhi" style="background:var(--wood)">寅</div>
+      <div class="bazi-dizhi-note">木</div>
+    </div>
+    <div class="bazi-pillar">
+      <div class="bazi-pillar-label">时 柱</div>
+      <div class="bazi-tiangan">辛</div>
+      <div class="bazi-tiangan-note">伤官</div>
+      <div class="bazi-dizhi" style="background:var(--metal)">酉</div>
+      <div class="bazi-dizhi-note">金</div>
+    </div>
+  </div>
+
+  <div class="fade-in" style="font-size:14px;color:var(--ink-muted);text-align:center;margin-bottom:48px;line-height:2">
+    <strong>结构一句话：</strong>外金内木，首尾对称——年柱和时柱完全相同，<br>月柱和日柱地支相同，戊土大山被夹在中间。
+  </div>
+
+  <!-- Mountain Description -->
+  <div class="collapsible open" data-id="mountain">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title">
+        <span style="color:var(--earth)">◆</span> 你是一座什么样的山
+      </div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p>戊土 = 大山、城墙。天生稳定、抗造、包容、有承载力。像大山一样，你给人的感觉是"靠得住"，但也不太容易被撼动——换个说法就是有自己的坚持，不轻易妥协。</p>
+        <p style="margin-top:16px"><strong>但这座山有两个特殊情况：</strong></p>
+        <p style="margin-top:8px">一、初春出生，山还冷着。正月的大山，冰雪未消，最需要太阳（丙火）来温暖。</p>
+        <p style="margin-top:8px">二、身弱——能量消耗大于补充。天干三个金一直在"泄"你的气，地支两个寅木在"克"你。腹背受敌，日主偏弱。</p>
+        <div class="energy-quote" style="margin-top:16px">
+          通俗理解"身弱"：不是说你弱，而是你的能量输出远大于输入。你才华很多、做的事情很多、承担的压力也大，但给自己"充电"的意识和机会偏少。能量管理是你一辈子的课题。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Five Energies -->
+  <h3 style="font-family:var(--serif);font-size:18px;font-weight:400;letter-spacing:3px;margin:48px 0 24px;color:var(--ink)" class="fade-in">五种核心能量</h3>
+
+  <!-- Radar Chart -->
+  <div class="radar-container fade-in">
+    <svg viewBox="0 0 400 320" width="400" height="320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+      <!-- Grid -->
+      <polygon points="200,40 340,120 300,260 100,260 60,120" fill="none" stroke="var(--border)" stroke-width="1"/>
+      <polygon points="200,90 295,145 270,235 130,235 105,145" fill="none" stroke="var(--border)" stroke-width="0.5" opacity="0.5"/>
+      <polygon points="200,140 250,170 240,210 160,210 150,170" fill="none" stroke="var(--border)" stroke-width="0.5" opacity="0.3"/>
+      <!-- Data shape -->
+      <polygon points="200,44 336,118 160,255 108,142 200,130" fill="var(--cinnabar)" fill-opacity="0.08" stroke="var(--cinnabar)" stroke-width="1.5" stroke-opacity="0.4"/>
+      <!-- Dots -->
+      <circle cx="200" cy="44" r="5" fill="var(--metal)"/><!-- 食伤·金 极高 -->
+      <circle cx="336" cy="118" r="5" fill="var(--wood)"/><!-- 七杀·木 较高 -->
+      <circle cx="160" cy="255" r="5" fill="var(--fire)"/><!-- 偏印·火 中藏 -->
+      <circle cx="108" cy="142" r="5" fill="var(--water)"/><!-- 财·水 缺 -->
+      <circle cx="200" cy="130" r="5" fill="var(--earth)"/><!-- 日主·土 弱 -->
+      <!-- Labels -->
+      <text x="200" y="26" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="13" fill="var(--metal)">食伤 · 金</text>
+      <text x="200" y="14" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="10" fill="var(--ink-faint)">极旺</text>
+      <text x="354" y="122" text-anchor="start" font-family="'Noto Serif SC',serif" font-size="13" fill="var(--wood)">七杀 · 木</text>
+      <text x="354" y="136" text-anchor="start" font-family="'Noto Serif SC',serif" font-size="10" fill="var(--ink-faint)">暗藏</text>
+      <text x="150" y="278" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="13" fill="var(--fire)">偏印 · 火</text>
+      <text x="150" y="292" text-anchor="middle" font-family="'Noto Serif SC',serif" font-size="10" fill="var(--ink-faint)">用神 · 藏</text>
+      <text x="86" y="138" text-anchor="end" font-family="'Noto Serif SC',serif" font-size="13" fill="var(--water)">财 · 水</text>
+      <text x="86" y="152" text-anchor="end" font-family="'Noto Serif SC',serif" font-size="10" fill="var(--ink-faint)">完全缺失</text>
+      <text x="216" y="128" text-anchor="start" font-family="'Noto Serif SC',serif" font-size="13" fill="var(--earth)">日主 · 土</text>
+      <text x="216" y="142" text-anchor="start" font-family="'Noto Serif SC',serif" font-size="10" fill="var(--ink-faint)">偏弱</text>
+    </svg>
+  </div>
+
+  <div class="energy-grid">
+    <div class="energy-card fade-in" data-element="metal">
+      <div class="energy-num">NO.1</div>
+      <div class="energy-name">食伤极旺 —— 你最强的天赋</div>
+      <div class="energy-tagline">金 · 三庚辛 + 双酉</div>
+      <div class="energy-desc">
+        <p><strong>食神（庚金）= 矿石、大刀。</strong>做事干脆利落，行动力强，说断就断。表达不带攻击性，但精准有力。</p>
+        <p style="margin-top:8px"><strong>伤官（辛金）= 珠宝、手术刀。</strong>追求完美、注重细节、审美敏锐。带有"不甘于平庸"的底色。</p>
+      </div>
+      <div class="energy-quote">
+        你的临床医学起点就是辛金的极致体现——手术刀的精准、对生命的谨慎、精益求精的态度。后来转创业拿近亿投资、年营业额上千万，走的是典型的"食伤生财"路径。
+      </div>
+    </div>
+    <div class="energy-card fade-in" data-element="wood">
+      <div class="energy-num">NO.2</div>
+      <div class="energy-name">七杀暗藏 —— 内在的压力引擎</div>
+      <div class="energy-tagline">木 · 甲木藏于双寅</div>
+      <div class="energy-desc">
+        甲木七杀藏在两个寅木里面，不透天干。七杀 = 非常规的压力和挑战。这种驱动力别人不容易察觉，但它一直在你内部运转，是你韧性和目标感的来源。
+      </div>
+      <div class="energy-quote">33岁从三甲医院无缝转行，就是七杀的"不变就死"式推力。</div>
+    </div>
+    <div class="energy-card fade-in" data-element="fire">
+      <div class="energy-num">NO.3</div>
+      <div class="energy-name">偏印暗藏 —— 隐秘充电站</div>
+      <div class="energy-tagline">火 · 丙火藏于双寅 · 用神</div>
+      <div class="energy-desc">
+        <p>丙火偏印也藏在两个寅木里面。偏印 = 非常规的学习力、直觉力、灵性滋养。</p>
+        <p style="margin-top:8px"><strong>丙火是你整个八字最关键的"用神"</strong>——通关（化解金木矛盾）、帮身（火生土）、调候（暖山）三合一。所有与"火"相关的事物对你都有天然的滋养作用。</p>
+      </div>
+      <div class="energy-quote">你从临床医学到心理学/系统排列，表面上是跨领域，从能量角度看是同一条线——偏印从"治身体"升级到"治心灵"。</div>
+    </div>
+    <div class="energy-card fade-in" data-element="water">
+      <div class="energy-num">NO.4</div>
+      <div class="energy-name">财星完全缺失 —— 与"钱"的特殊关系</div>
+      <div class="energy-tagline">水 · 壬癸水完全不现</div>
+      <div class="energy-desc">
+        <p>整个八字没有任何水。不是说你没钱，而是你赚钱的方式不走常规路线。你的模式是"食伤生财"——通过专业能力创造价值再变现。</p>
+        <p style="margin-top:8px">缺水在心理层面意味着：对"被深度理解"和"情感流动"有渴望，但不太容易得到满足，也不太擅长主动寻求。</p>
+      </div>
+    </div>
+    <div class="energy-card fade-in" data-element="earth">
+      <div class="energy-num">NO.5</div>
+      <div class="energy-name">无正印无正官 —— 极度独立</div>
+      <div class="energy-tagline">没有丁火正印 · 没有乙木正官</div>
+      <div class="energy-desc">
+        没有传统意义上的"庇护者"，不太服从传统规则。你的安全感主要靠自己给自己（偏印），面对的挑战也多是非常规的（七杀而非正官）。
+      </div>
+    </div>
+  </div>
+
+  <!-- Geju & Personality -->
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--gold-accent)">◆</span> 格局：食神制杀</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p>月柱庚金（食神）坐在寅木（七杀）上方，形成"食神制杀"的格局——有压力但有手段化解，面对困难有自己消解和应对的方式。越是困境越能激发潜能。</p>
+        <div class="energy-quote" style="margin-top:16px">
+          甲午大运（2012-2021）是最佳验证：33岁离开体制，选择互联网医疗这条非常规路径，压力激发了学习力和创新力（杀印相生），最终拿到红杉近亿投资——食伤生财被最大化。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--indigo)">◆</span> 性格的四层结构</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p style="margin-bottom:24px">把你的性格想象成洋葱，一层层剥开：</p>
+        <div class="layer-stack">
+          <div class="layer-ring" style="width:240px;height:240px;background:rgba(158,142,110,0.08);border:2px solid var(--metal)">
+            <div>
+              <div class="layer-ring-label">第一层 · 辛金伤官</div>
+              <div class="layer-ring-sub">精致、有品位、有标准</div>
+            </div>
+            <div class="layer-tooltip">年干辛金。别人最先看到的你：聪明伶俐，精致有主见。</div>
+          </div>
+          <div class="layer-ring" style="width:190px;height:190px;background:rgba(158,142,110,0.12);border:2px solid var(--metal);margin-top:-40px">
+            <div>
+              <div class="layer-ring-label">第二层 · 庚金食神</div>
+              <div class="layer-ring-sub">干脆利落、高效直接</div>
+            </div>
+            <div class="layer-tooltip">月干庚金。稍微熟悉后展现的你：行动力强，说做就做。</div>
+          </div>
+          <div class="layer-ring" style="width:140px;height:140px;background:rgba(91,140,111,0.1);border:2px solid var(--wood);margin-top:-30px">
+            <div>
+              <div class="layer-ring-label">第三层 · 寅木</div>
+              <div class="layer-ring-sub">生命力与复杂性</div>
+            </div>
+            <div class="layer-tooltip">日支寅木。亲密关系中的你：七杀的压力与偏印的温暖并存。</div>
+          </div>
+          <div class="layer-ring" style="width:90px;height:90px;background:rgba(158,142,110,0.15);border:2px dashed var(--ink-faint);margin-top:-20px">
+            <div>
+              <div class="layer-ring-label" style="font-size:12px">第四层</div>
+              <div class="layer-ring-sub" style="font-size:10px">极致与留白</div>
+            </div>
+            <div class="layer-tooltip">时柱辛酉（空亡）。内心深处极度追求完美和纯粹，追求到极致反而觉得什么都不那么重要。</div>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:24px;font-family:var(--serif);color:var(--ink-muted);font-size:14px">一句话总结：外冷内热，金包土包火。认识你需要层层剥开。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--cinnabar)">◆</span> 两个值得觉察的"卡点"</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p><strong>酉酉自刑 = 自己跟自己过不去</strong></p>
+        <p>年支酉和时支酉形成"自刑"——完美主义内耗的根源。外在追求完美 → 内心也追求完美 → 两边都达不到自己的标准 → 消耗。</p>
+        <p style="margin-top:16px"><strong>伤官空亡 = 低估自己的才华</strong></p>
+        <p>两个辛金伤官都落入空亡。才华是实实在在有的，但容易被自己低估——"明明很有想法却觉得说出来也无所谓"。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--ink-faint)">◆</span> 空亡 · 感情 · 健康</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p><strong>空亡补充</strong></p>
+        <p>年柱辛酉空亡：与原生家庭的连接感偏弱，可能有"缺席感"。时柱辛酉空亡：对物质成就的执念相对淡薄，内心有一块留白。</p>
+
+        <p style="margin-top:20px"><strong>感情模式</strong></p>
+        <p>日支寅木（夫妻宫）藏甲木七杀、丙火偏印、戊土比肩。可能被有力量感、有主见的人吸引；亲密关系中需要精神层面的滋养和温暖；伴侣在某些本质层面会与你相似。</p>
+
+        <p style="margin-top:20px"><strong>健康提示</strong></p>
+        <p>脾胃（土弱）消化吸收偏弱；肺/皮肤（金旺）注意呼吸系统过敏；肝胆（木藏）情绪疏导别闷着；心脏循环（火藏）手脚可能凉；肾/膀胱（水缺）补水养肾是长期课题。</p>
+        <p style="margin-top:12px"><strong>日常调养优先级：</strong>多晒太阳（补火第一位）→ 养脾胃 → 补水意识 → 情绪疏导。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 2 -->
+<section class="section" id="part2">
+  <div class="section-label fade-in">第二部分</div>
+  <h2 class="section-title fade-in">大运全景</h2>
+  <p class="fade-in" style="font-size:14px;color:var(--ink-muted);margin-bottom:32px;line-height:2">大运是每十年换一次的"大气候"，决定了那十年的基调。</p>
+
+  <div class="timeline fade-in">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1982 · 2岁</div>
+      <div class="timeline-title">辛卯 · 童年</div>
+      <div class="timeline-desc">伤官期</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">1992 · 12岁</div>
+      <div class="timeline-title">壬辰 · 求学</div>
+      <div class="timeline-desc">财的课题浮现</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2002 · 22岁</div>
+      <div class="timeline-title">癸巳 · 三甲医院</div>
+      <div class="timeline-desc">正财+偏印。稳定收入+持续学习精进。进入三甲，整个大运在医院稳定工作。</div>
+    </div>
+    <div class="timeline-item highlight">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2012 · 32岁</div>
+      <div class="timeline-title">甲午 · 人生巅峰蜕变期</div>
+      <div class="timeline-desc">七杀+偏印 = 杀印相生的黄金组合。转行、创业、拿投资。午火恰好是用神帝旺之地。</div>
+    </div>
+    <div class="timeline-item current">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2022 · 42岁</div>
+      <div class="timeline-title">乙未 · 当下</div>
+      <div class="timeline-desc">
+        <p><strong>核心课题：找到自己最终要"站"的位置。</strong></p>
+        <p style="margin-top:8px">正官入局——外界给予规则和框架。未土帮身——日主有了更多支撑，尤其丁火正印在大运中出现，这十年会感受到更多被庇护感和安全感。乙庚合金——"以柔克刚"，可能体现为互补型合作或贵人出现。</p>
+      </div>
+    </div>
+    <div class="timeline-item future highlight">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2032 · 52岁</div>
+      <div class="timeline-title">丙申 · 用神到位！黄金十年</div>
+      <div class="timeline-desc">太阳高照期</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2042 · 62岁</div>
+      <div class="timeline-title">丁酉 · 沉淀与内观</div>
+    </div>
+    <div class="timeline-item future">
+      <div class="timeline-dot"></div>
+      <div class="timeline-year">2052 · 72岁</div>
+      <div class="timeline-title">戊戌 · 回归自我</div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 3 -->
+<section class="section" id="part3">
+  <div class="section-label fade-in">第三部分</div>
+  <h2 class="section-title fade-in">2026 丙午年运精析</h2>
+
+  <div class="collapsible open fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--fire)">◆</span> 这一年为什么重要</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p><strong>用神丙火终于从"藏"变为"透"！</strong></p>
+        <p style="margin-top:8px">原局中丙火一直藏在寅木里面，像清晨黎明前的太阳。2026年丙火透出天干、坐午火帝旺——太阳升起来了，而且是正午的太阳，力量极强。</p>
+        <p style="margin-top:8px">这意味着：偏印能量被完全激活；过旺的食伤被制约，内耗减少；日主得到强力支撑，整体能量水平提升。</p>
+
+        <p style="margin-top:20px"><strong>年度最核心的能量关系：丙辛合</strong></p>
+        <p style="margin-top:8px">2026年丙火与原局辛金形成天干五合——被称为"最美丽的合"。</p>
+        <div class="energy-quote" style="margin-top:12px">
+          意象：阳光照射珠宝，互相衬托，bling bling。<br>
+          丙火（偏印/学习力）× 辛金（伤官/才华表达）= 内功与输出的深度融合。
+        </div>
+        <p style="margin-top:12px"><strong>积极面：</strong>灵性/心理学积累与专业输出能力产生化学反应；将深度洞察转化为可传播的作品或课程；输出有很强的吸引力和审美质感。</p>
+        <p style="margin-top:8px"><strong>需要注意：</strong>合也意味着被牵住——用神被辛金合住，力量打了折扣。不要让输出消耗了滋养。</p>
+
+        <p style="margin-top:20px"><strong>地支的配合</strong></p>
+        <p style="margin-top:8px">午未合（流年+大运）协调配合；寅午半合火加强火力；午火与酉金无直接冲害，地支层面平稳。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Year Assessment -->
+  <div class="assess-grid fade-in">
+    <div class="assess-item">
+      <div class="assess-label">用神到位</div>
+      <div class="assess-stars">★★★★☆</div>
+      <div class="assess-note">丙火透干但被合住</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">日主能量</div>
+      <div class="assess-stars">★★★★★</div>
+      <div class="assess-note">火土力量充沛</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">事业机会</div>
+      <div class="assess-stars">★★★★☆</div>
+      <div class="assess-note">适合打造个人IP</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">财运</div>
+      <div class="assess-stars">★★★☆☆</div>
+      <div class="assess-note">需要主动接</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">健康</div>
+      <div class="assess-stars">★★★★☆</div>
+      <div class="assess-note">注意肺/呼吸系统</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">人际</div>
+      <div class="assess-stars">★★★★☆</div>
+      <div class="assess-note">吸引力增强</div>
+    </div>
+    <div class="assess-item">
+      <div class="assess-label">内在成长</div>
+      <div class="assess-stars">★★★★★</div>
+      <div class="assess-note">灵性深化绝佳时期</div>
+    </div>
+  </div>
+
+  <!-- Three Themes -->
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--fire)">一</span> 从"内功"到"显化"</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p>过去几年在心理学/系统排列领域的持续精进（偏印积累），到2026年丙辛合的到来，意味着内功开始向外转化的窗口期。</p>
+        <p style="margin-top:8px">可能的方向：将系统排列的经验体系化为可教授的内容；医学背景 + 心理学深度 + 互联网思维的跨界整合；个人品牌/IP的打造。</p>
+        <p style="margin-top:8px;color:var(--ink-muted)">节奏提示：丙辛合的特质是"互相打磨"，不需要一步到位，边做边修正。</p>
+      </div>
+    </div>
+  </div>
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--fire)">二</span> 定位——"我要站在哪里"</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p>乙未大运的正官课题进入第四年。临床→创业→大厂，身份多次转换。2026年丙火的加入形成了一条完整链条：</p>
+        <p style="margin-top:8px;font-family:var(--serif);text-align:center;font-size:15px"><strong>定位（乙木正官）→ 深化（丙火偏印）→ 输出（辛金伤官）</strong></p>
+        <p style="margin-top:8px">方向感、学习深化和美感输出三者开始串联。</p>
+      </div>
+    </div>
+  </div>
+  <div class="collapsible fade-in">
+    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+      <div class="collapsible-title"><span style="color:var(--fire)">三</span> 财运——有象但需主动</div>
+      <span class="collapsible-arrow">▼</span>
+    </div>
+    <div class="collapsible-body">
+      <div class="collapsible-content">
+        <p>原局无财星，2026年丙辛合有"化水（财）"的象但条件不足，合而不化。你不缺赚钱能力，缺的是"主动接财"的意识。机会出现时需要主动去接、去推动。</p>
+        <p style="margin-top:8px"><strong>财运窗口月份：</strong>4月（壬辰月，偏财浮现）和5月（癸巳月，正财+偏印）。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monthly Energy Curve -->
+  <h3 id="monthly" style="font-family:var(--serif);font-size:18px;font-weight:400;letter-spacing:3px;margin:48px 0 16px;color:var(--ink)" class="fade-in">2026 年度能量曲线</h3>
+  <p class="fade-in" style="font-size:13px;color:var(--ink-faint);margin-bottom:24px">横轴为月份，纵轴为能量等级</p>
+
+  <div class="curve-container fade-in">
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <!-- Grid lines -->
+      <line x1="60" y1="30" x2="700" y2="30" stroke="var(--border)" stroke-width="0.5"/>
+      <line x1="60" y1="70" x2="700" y2="70" stroke="var(--border)" stroke-width="0.5"/>
+      <line x1="60" y1="110" x2="700" y2="110" stroke="var(--border)" stroke-width="0.5"/>
+      <line x1="60" y1="150" x2="700" y2="150" stroke="var(--border)" stroke-width="0.5"/>
+      <line x1="60" y1="190" x2="700" y2="190" stroke="var(--border)" stroke-width="0.5"/>
+      <!-- Y labels -->
+      <text x="50" y="34" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--sans)">★5</text>
+      <text x="50" y="74" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--sans)">★4</text>
+      <text x="50" y="114" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--sans)">★3</text>
+      <text x="50" y="154" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--sans)">★2</text>
+      <text x="50" y="194" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--sans)">★1</text>
+      <!-- Data: 2=110, 3=110, 4=110, 5=110, 6=30, 7=110, 8=70, 9=110, 10=30, 11=150, 12=110 -->
+      <!-- Scores: Feb3, Mar2, Apr3, May3, Jun5, Jul3, Aug4, Sep3, Oct5, Nov2, Dec3 -->
+      <!-- Y mapping: 5→30, 4→70, 3→110, 2→150, 1→190 -->
+      <!-- X: 11 months, from x=80 to x=680, step ~58 -->
+      <!-- Area -->
+      <path d="M80,110 L138,150 L196,110 L254,110 L312,30 L370,110 L428,70 L486,110 L544,30 L602,150 L660,110 L660,190 L80,190 Z" fill="var(--cinnabar)" fill-opacity="0.06"/>
+      <!-- Line -->
+      <polyline points="80,110 138,150 196,110 254,110 312,30 370,110 428,70 486,110 544,30 602,150 660,110" fill="none" stroke="var(--cinnabar)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Dots & Labels -->
+      <circle cx="80" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="80" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">2月</text>
+
+      <circle cx="138" cy="150" r="5" fill="var(--bg-card)" stroke="#D4A030" stroke-width="2.5"/>
+      <text x="138" y="168" text-anchor="middle" font-size="11" fill="#D4A030" font-family="var(--serif)" font-weight="500">3月</text>
+      <text x="138" y="144" text-anchor="middle" font-size="9" fill="#D4A030">⚠</text>
+
+      <circle cx="196" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="196" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">4月</text>
+
+      <circle cx="254" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="254" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">5月</text>
+
+      <circle cx="312" cy="30" r="6" fill="var(--cinnabar)" stroke="var(--bg-card)" stroke-width="2"/>
+      <text x="312" y="22" text-anchor="middle" font-size="11" fill="var(--cinnabar)" font-family="var(--serif)" font-weight="600">6月</text>
+
+      <circle cx="370" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="370" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">7月</text>
+
+      <circle cx="428" cy="70" r="5" fill="var(--bg-card)" stroke="var(--jade)" stroke-width="2.5"/>
+      <text x="428" y="62" text-anchor="middle" font-size="11" fill="var(--jade)" font-family="var(--serif)" font-weight="500">8月</text>
+
+      <circle cx="486" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="486" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">9月</text>
+
+      <circle cx="544" cy="30" r="6" fill="var(--cinnabar)" stroke="var(--bg-card)" stroke-width="2"/>
+      <text x="544" y="22" text-anchor="middle" font-size="11" fill="var(--cinnabar)" font-family="var(--serif)" font-weight="600">10月</text>
+
+      <circle cx="602" cy="150" r="5" fill="var(--bg-card)" stroke="#D4A030" stroke-width="2.5"/>
+      <text x="602" y="168" text-anchor="middle" font-size="11" fill="#D4A030" font-family="var(--serif)" font-weight="500">11月</text>
+      <text x="602" y="144" text-anchor="middle" font-size="9" fill="#D4A030">⚠</text>
+
+      <circle cx="660" cy="110" r="4" fill="var(--bg-card)" stroke="var(--ink-muted)" stroke-width="2"/>
+      <text x="660" y="128" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--serif)">12月</text>
+    </svg>
+  </div>
+
+  <!-- Monthly Cards -->
+  <h3 style="font-family:var(--serif);font-size:18px;font-weight:400;letter-spacing:3px;margin:48px 0 24px;color:var(--ink)" class="fade-in">逐月能量指南</h3>
+
+  <div class="month-grid">
+    <div class="month-card fade-in" id="m2">
+      <div class="month-header">
+        <div class="month-num">2</div>
+        <div class="month-info">
+          <div class="month-ganzhi">庚寅月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword">稳住节奏</div>
+      <div class="month-body">食神+七杀。天干庚金和地支寅木都与原局重叠（伏吟），"食神制杀"被加强。工作中可能面临压力，但你有足够能力应对。三寅齐聚，压力感偏大。</div>
+      <div class="month-advice"><strong>行动建议：</strong>保持节奏，不要被推着跑。</div>
+    </div>
+
+    <div class="month-card warning fade-in" id="m3">
+      <div class="month-header">
+        <div class="month-num" style="color:#A07030">3</div>
+        <div class="month-info">
+          <div class="month-ganzhi">辛卯月</div>
+          <div class="month-stars">★★☆☆</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:#F0E6C8;color:#A07030">年度最需警惕</div>
+      <div class="month-body">伤官见官 + 卯酉冲。辛金伤官与卯木正官冲突，金木正面碰撞。可能与上级产生摩擦、对规则强烈不满、言辞过于锋利。</div>
+      <div class="month-advice"><strong>行动建议：</strong>管住嘴，少发表尖锐意见。不在这个月做重大职业决定。有情绪找安全出口。注意颈椎、肩膀保养。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m4">
+      <div class="month-header">
+        <div class="month-num">4</div>
+        <div class="month-info">
+          <div class="month-ganzhi">壬辰月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword">财运窗口</div>
+      <div class="month-body">偏财浮现。原局完全缺水，这个月壬水偏财来了——江河湖海的大气感。辰土 = 财库。投资机会、合作邀约或意外收入最可能在此出现。</div>
+      <div class="month-advice"><strong>行动建议：</strong>留意机会，也可以是"为自己投资"——花钱学习或投入项目。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m5">
+      <div class="month-header">
+        <div class="month-num">5</div>
+        <div class="month-info">
+          <div class="month-ganzhi">癸巳月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword">落地变现</div>
+      <div class="month-body">正财+偏印。戊癸合火——日主与流月天干形成合。意象是"把模糊的赚钱想法落地"。</div>
+      <div class="month-advice"><strong>行动建议：</strong>把之前酝酿的商业想法推进一步。</div>
+    </div>
+
+    <div class="month-card highlight fade-in" id="m6">
+      <div class="month-header">
+        <div class="month-num" style="color:var(--cinnabar)">6</div>
+        <div class="month-info">
+          <div class="month-ganzhi">甲午月</div>
+          <div class="month-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:var(--cinnabar-light);color:var(--cinnabar)">年度蜕变窗口</div>
+      <div class="month-body">杀印相生——和甲午大运（2012-2021）能量完全相同！天干甲丙齐透，地支双午火帝旺。用神力量在6月达到年度最强。可能做出重要决定、在学习/灵性领域有突破性体验、找到方向感、遇到深刻影响的人或事。</div>
+      <div class="month-advice"><strong>行动建议：</strong>如果有一直犹豫的事情，6月的能量最支持行动。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m7">
+      <div class="month-header">
+        <div class="month-num">7</div>
+        <div class="month-info">
+          <div class="month-ganzhi">乙未月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword">沉淀消化</div>
+      <div class="month-body">大运伏吟。正官定位课题被放大——"我到底要站在哪里"被再次追问。未土帮身有支撑，但可能有"原地打转"的感觉。</div>
+      <div class="month-advice"><strong>行动建议：</strong>适合沉淀和反思，不必急于行动。6月做的决定，7月用来消化整理。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m8" style="border-color:var(--jade-light)">
+      <div class="month-header">
+        <div class="month-num" style="color:var(--jade)">8</div>
+        <div class="month-info">
+          <div class="month-ganzhi">丙申月</div>
+          <div class="month-stars">★★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:var(--jade-light);color:var(--jade)">创造力高峰</div>
+      <div class="month-body">偏印+食神。丙火偏印叠加流年丙火，偏印力量加倍；申金食神带来新的创造力。学到的东西直接转化为创造力。</div>
+      <div class="month-advice"><strong>行动建议：</strong>最适合课程开发、写作、内容创作、体系梳理。注意工作节奏不要太满。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m9">
+      <div class="month-header">
+        <div class="month-num">9</div>
+        <div class="month-info">
+          <div class="month-ganzhi">丁酉月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:#F0E6C8;color:#A07030">休息月</div>
+      <div class="month-body">正印+伤官。丁火正印出现——原局完全缺正印，这个月正印来了，适合休息、被照顾。三酉齐聚，酉酉自刑被加强——完美主义内耗可能达到峰值。</div>
+      <div class="month-advice"><strong>行动建议：</strong>主动安排休息。接受"不完美"。适合接受心理督导或被他人疗愈。</div>
+    </div>
+
+    <div class="month-card highlight fade-in" id="m10">
+      <div class="month-header">
+        <div class="month-num" style="color:var(--cinnabar)">10</div>
+        <div class="month-info">
+          <div class="month-ganzhi">戊戌月</div>
+          <div class="month-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:var(--cinnabar-light);color:var(--cinnabar)">三合火局 · 收获落地</div>
+      <div class="month-body">寅午戌三合火局完整成立！用神火力全面爆发。日主戊土得到比肩和三合火局的双重加持，全年能量最强月份。戌为火库/土库，能量被结构化，适合收获。</div>
+      <div class="month-advice"><strong>小提醒：</strong>戌与酉形成"六害"，最强能量的月份可能伴随微妙的不和谐感——那只是完美主义在作祟，不要因此否定成果。</div>
+    </div>
+
+    <div class="month-card warning fade-in" id="m11">
+      <div class="month-header">
+        <div class="month-num" style="color:#A07030">11</div>
+        <div class="month-info">
+          <div class="month-ganzhi">己亥月</div>
+          <div class="month-stars">★★☆☆</div>
+        </div>
+      </div>
+      <div class="month-keyword" style="background:#F0E6C8;color:#A07030">守财月</div>
+      <div class="month-body">劫财+偏财 = "劫财破财"之象——资源被抢夺、计划外花销、投资失利的风险。同时寅亥合木，七杀力量暗中加强。</div>
+      <div class="month-advice"><strong>行动建议：</strong>收紧钱袋，谨慎理财。不做大额投资。合作中涉及分钱的事务，在这个月之前谈清楚。</div>
+    </div>
+
+    <div class="month-card fade-in" id="m12">
+      <div class="month-header">
+        <div class="month-num">12</div>
+        <div class="month-info">
+          <div class="month-ganzhi">庚子月</div>
+          <div class="month-stars">★★★☆</div>
+        </div>
+      </div>
+      <div class="month-keyword">收尾</div>
+      <div class="month-body">食神+正财。子水正财出现，年末有一波正当收入的机会。但子午冲——用神被冲，能量有所回落。</div>
+      <div class="month-advice"><strong>行动建议：</strong>适合做好年度结算和总结。子午冲的变动感不必恐惧——冲也是一种"打开"。</div>
+    </div>
+  </div>
+</section>
+
+<!-- PART 4 -->
+<section class="section" id="part4">
+  <div class="section-label fade-in">第四部分</div>
+  <h2 class="section-title fade-in">2026年度行动清单</h2>
+
+  <div class="action-section fade-in">
+    <div class="action-level"><div class="action-dot red"></div>高度警惕</div>
+    <div class="action-item red-bg">
+      <span class="action-num">1.</span><strong>3月：管住嘴。</strong>伤官见官+卯酉冲，不做重大决定，注意颈椎/手部健康。
+    </div>
+    <div class="action-item red-bg">
+      <span class="action-num">2.</span><strong>11月：守住财。</strong>不做大额投资，合作分利提前谈清，收紧财务。
+    </div>
+    <div class="action-item red-bg">
+      <span class="action-num">3.</span><strong>全年：别把充电的能量全用来输出。</strong>丙辛合让偏印和伤官融合，但用神被合住意味着你容易"为了做事而忘了养自己"。偏印的能量要留一部分给自己。
+    </div>
+  </div>
+
+  <div class="action-section fade-in">
+    <div class="action-level"><div class="action-dot yellow"></div>中度注意</div>
+    <div class="action-item yellow-bg">
+      <span class="action-num">4.</span><strong>9月：</strong>三酉自刑加重，完美主义内耗高峰，主动安排休息和被滋养的时间。
+    </div>
+    <div class="action-item yellow-bg">
+      <span class="action-num">5.</span><strong>肺/呼吸系统：</strong>火旺年份金受克，秋冬季注意呼吸道，保持润肺。
+    </div>
+    <div class="action-item yellow-bg">
+      <span class="action-num">6.</span><strong>脾胃：</strong>日主身弱，脾胃始终要关注。饮食别太辛辣，保持规律。
+    </div>
+  </div>
+
+  <div class="action-section fade-in">
+    <div class="action-level"><div class="action-dot green"></div>积极把握</div>
+    <div class="action-item green-bg">
+      <span class="action-num">7.</span><strong>6月 = 年度蜕变窗口：</strong>一直想做的事，6月最适合启动。
+    </div>
+    <div class="action-item green-bg">
+      <span class="action-num">8.</span><strong>8月 = 创造力巅峰：</strong>最适合课程开发、内容创作、体系梳理。
+    </div>
+    <div class="action-item green-bg">
+      <span class="action-num">9.</span><strong>10月 = 收获落地：</strong>三合火局成立，全年能量最强，适合拿成果。
+    </div>
+    <div class="action-item green-bg">
+      <span class="action-num">10.</span><strong>全年偏印主题：</strong>心理学/系统排列/灵性学习的深化会在2026年结出果实，不要低估这个方向的价值。
+    </div>
+  </div>
+</section>
+
+<!-- Closing -->
+<section class="closing" id="closing">
+  <div class="section-label fade-in">写给爱马</div>
+  <div class="closing-text fade-in">
+    <p>你是一个极其典型的"食伤生财+食神制杀"型成功者——所有成就都是靠自己的能力打下来的。戊土大山，金光闪耀，一路披荆斩棘。</p>
+    <p style="margin-top:16px">2026年丙午，太阳终于从寅木的藏匿中完全升起。</p>
+    <p class="closing-highlight">但丙辛合提醒你：太阳不是用来照亮所有人的，首先是用来温暖自己的。</p>
+    <p style="margin-top:16px">你过往所有的经历——临床的严谨、创业的魄力、大厂的历练、心理学的深度——在2026年有机会被整合成一个完整的"你"。食伤是你的天赋，偏印是你的源泉。当天赋和源泉融合（丙辛合），你不再只是"做得好"，而是"做得美"。</p>
+  </div>
+
+  <div class="closing-reminders fade-in">
+    <div class="closing-reminder-item">
+      <strong>第一，3月和11月，守住。</strong><br>一个守嘴，一个守财。不是说会出大事，而是这两个月的能量容易冲过头。
+    </div>
+    <div class="closing-reminder-item">
+      <strong>第二，6月和10月，出手。</strong><br>这是你全年最强的两个窗口。如果2026年有什么要"做成"的事，瞄准这两个月。
+    </div>
+    <div class="closing-reminder-item">
+      <strong>第三，全年最大的课题：允许自己被滋养。</strong><br>戊土大山习惯了承载一切，但大山也需要阳光和雨水。2026年的丙火是来给你的，不是让你拿去给别人的。
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  八字是能量地图而非命运判决。一象多路，选择权始终在自己手中。
+</footer>
+
+</div><!-- container -->
+</div><!-- main-content -->
+
+<script>
+// Password
+const CORRECT_PW = 'aima2026';  // 请修改为实际密码
+
+function checkPassword() {
+  const input = document.getElementById('pw-input').value;
+  if (input === CORRECT_PW) {
+    document.getElementById('password-screen').classList.add('hidden');
+    document.getElementById('main-content').classList.add('visible');
+    setTimeout(initScrollAnimations, 300);
+  } else {
+    document.getElementById('pw-error').textContent = '密码不正确，请重试';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+// Collapsible - wrap content for grid animation
+document.querySelectorAll('.collapsible-body').forEach(body => {
+  const inner = document.createElement('div');
+  inner.className = 'collapsible-body-inner';
+  while (body.firstChild) inner.appendChild(body.firstChild);
+  body.appendChild(inner);
+});
+
+// Collapsible toggle
+function toggleCollapsible(header) {
+  const c = header.parentElement;
+  c.classList.toggle('open');
+}
+
+// Scroll animations
+function initScrollAnimations() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible-anim');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+}
+
+// Active nav tracking
+const sections = ['part1','part2','part3','monthly','part4','closing'];
+function updateNav() {
+  const scrollY = window.scrollY + 200;
+  let active = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) active = id;
+  });
+  document.querySelectorAll('.nav-item, .nav-sub, .mobile-nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.section === active);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+
+// Highlight current month card
+(function() {
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-12
+  if (month >= 2 && month <= 12) {
+    const card = document.getElementById('m' + month);
+    if (card) {
+      card.style.boxShadow = '0 0 0 2px var(--cinnabar), 0 8px 24px var(--shadow-md)';
+    }
+  }
+})();
+</script>
+</body>
+</html>
